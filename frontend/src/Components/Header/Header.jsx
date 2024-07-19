@@ -22,7 +22,7 @@ const Header = () => {
             <div className="header" style={headerStyle}>
                 <img
                     style={imageStyle}
-                    src={colorMode === "dark" ? "light-logo.svg" : "dark-logo.svg"}
+                    src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                     alt="Logo"
                     onClick={toggleColorMode}
                 />
