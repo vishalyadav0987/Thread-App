@@ -1,0 +1,109 @@
+.user-header {
+    padding: 1.6rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.top-part {
+    display: flex;
+    justify-content: space-between;
+}
+
+.top-part .name-text {
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.top-part .username-container {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.top-part .username-container .thread-net-text {
+    font-size: 0.8rem;
+    background-color: #1e1e1e;
+    border-radius: 4rem;
+    color: #4d4d4d;
+    padding: 0.1rem 0.3rem;
+}
+
+.top-part .user-img {
+    width: 7rem;
+    background-color: aliceblue;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.top-part .user-img img {
+    width: 100%;
+}
+
+.bottom-part {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.8rem;
+}
+
+.follower-info {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+
+.follower-info span,
+a {
+    color: #4d4d4d;
+}
+
+.follower-info span:nth-child(2) {
+    width: 5px;
+    height: 5px;
+    background-color: #4d4d4d;
+    border-radius: 50%;
+}
+
+.bottom-part .options {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.8rem;
+    align-items: center;
+    cursor: pointer;
+}
+
+.options .menu-icon {
+    border: 3px solid #fff;
+    border-radius: 50%;
+    display: inline;
+}
+
+.slide-thread-replies {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.slide-thread-replies div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem;
+    border-bottom: 1px solid #4d4d4d;
+}
+
+.slide-thread-replies .active-slide {
+    border-bottom: 1px solid #fff;
+    cursor: pointer;
+}
+
+.slide-thread-replies .inactive-slide {
+    cursor: pointer;
+    color: #4d4d4d;
+}
