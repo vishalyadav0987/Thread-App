@@ -1,0 +1,109 @@
+.right-part-1 .post-header-1 div:first-child,
+.right-part-1 .post-header-1 div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.right-part-1 {
+    padding: 1.6rem 1rem;
+}
+
+.right-part-1 .post-header-1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.right-part-1 .post-header-1 div:nth-child(2) {
+    gap: 1rem;
+}
+
+.right-part-1 .post-header-1 div:nth-child(2) span:first-child {
+    color: #4d4d4d;
+}
+
+.right-part-1 .post-header-1 div:first-child div:nth-child(2) {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.right-part-1 .post-header-1 .tag {
+    width: 1.1rem;
+}
+
+.right-part-1 .post-header-1 div:first-child div:first-child {
+    width: 2rem;
+    border-radius: 50%;
+}
+
+.right-part-1.post-header-1 div:first-child div:first-child img {
+    width: 100%;
+}
+
+.right-part-1 .post-heading {
+    font-size: 0.9rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.45rem;
+}
+
+.user-post-img {
+    width: 500px;
+    height: 281px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border: 1px solid #4d4d4d;
+}
+
+.user-post-img img {
+    width: max-content;
+    height: 100%;
+    border-radius: 6px;
+}
+
+.single-post .leave-comment-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #4d4d4d;
+    border-bottom: 1px solid #4d4d4d;
+    padding:0.8rem 1rem;
+}
+
+.single-post .leave-comment-box div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 60%;
+}
+.single-post .leave-comment-box div span {
+    font-size: 1.6rem;
+}
+.single-post .leave-comment-box div input {
+    outline: none;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    background-color: initial;
+}
+.single-post .leave-comment-box div input::placeholder {
+   font-size: 0.9rem;
+}
+
+.single-post  button{
+    font-weight: bold;
+    background-color: #232323;
+    padding:9px 15px;
+    border-radius: 10px;
+}
+
+.divider{
+    width: 100%;
+    height: 1px;
+    background-color: #4d4d4d;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
