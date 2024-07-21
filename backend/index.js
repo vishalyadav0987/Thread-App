@@ -3,10 +3,17 @@ const app = express();
 const connectDB = require('./connectDB/connect');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
+const cookieParser = require('cookie-parser')
+const userRoutes = require('./routes/userRoutes')
 
 
-app.use(express.json());
+app.use(express.json());// parse payload data
+app.use(express.urlencoded({ extended: true })); // to parse form data
+app.use(cookieParser())
 
+
+// Routes
+app.use('/api/v1/user',userRoutes)
 
 app.get('/test', (req, res) => {
     res.send("This test route for testing purpose.");
