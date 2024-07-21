@@ -2,6 +2,7 @@ const { generateTokenAndSetCookie } = require('../generateToken/generateToken');
 const UserSchema = require('../modals/UserShema');
 const bcrypt = require('bcryptjs')
 
+// REGISTER -- USER
 const register = async (req, res) => {
     try {
         const { name, email, username, password } = req.body;
@@ -9,7 +10,7 @@ const register = async (req, res) => {
         const user = await UserSchema.findOne({ $or: [{ email }, { password }] });
 
         if (user) {
-            res.json({ success: true, message: "User Already exists." })
+            return res.json({ success: false, message: "User Already exists." })
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -46,6 +47,34 @@ const register = async (req, res) => {
     }
 }
 
+// LOGIN -- USER
+const login = async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await UserSchema.findOne({ username });
+
+        if (!user) {
+            return res.json({ success: false, message: "Invalid Credentials." })
+        }
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordMatch) {
+            return res.json({ success: false, message: "Invalid Credentials." })
+        }
+
+        generateTokenAndSetCookie(user._id, res);
+
+        res.json({
+            success: true,
+            message: "User logged in successfully.",
+        })
+
+    } catch (error) {
+        console.log("Error in login function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
 module.exports = {
-    register
+    register,
+    login,
 }
