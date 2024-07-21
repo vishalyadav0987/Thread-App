@@ -1,3 +1,4 @@
+const { generateTokenAndSetCookie } = require('../generateToken/generateToken');
 const UserSchema = require('../modals/UserShema');
 const bcrypt = require('bcryptjs')
 
@@ -24,6 +25,7 @@ const register = async (req, res) => {
         await newUser.save();
 
         if (newUser) {
+            generateTokenAndSetCookie(newUser._id, res);
             res.json({
                 success: true,
                 message: "User Registered successfully.",
