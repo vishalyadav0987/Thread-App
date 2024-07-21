@@ -98,7 +98,7 @@ const followUnFollowUser = async (req, res) => {
         const userToFollow = await UserSchema.findById(id);
         const currentUser = await UserSchema.findById(_id);
 
-        if (id === _id) {
+        if (id === _id.toString()) {
             return res.json({
                 success: false,
                 message: "You cannot follow/unfollow Yourself."
@@ -137,9 +137,57 @@ const followUnFollowUser = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
+// UPDATE -- USER
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, username, email, password, profilePic, bio } = req.body;
+        const userId = req.user._id;
+
+        let user = await UserSchema.findById(userId);
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not Found.",
+            });
+        }
+
+        if (id !== userId.toString()) {
+            return res.json({
+                success: false,
+                message: "You cannot update other profile."
+            })
+        }
+
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(password, salt);
+            user.password = hashedPassword;
+        }
+
+        user.name = name || user.name;
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.profilePic = profilePic || user.profilePic;
+        user.bio = bio || user.bio;
+
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: "Profile Updated Successfully."
+        })
+    } catch (error) {
+        console.log("Error in updateUser function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
 module.exports = {
     register,
     login,
     logout,
     followUnFollowUser,
+    updateUser,
 }
