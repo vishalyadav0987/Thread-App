@@ -184,10 +184,33 @@ const updateUser = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
+//GET -- USER PROFILE
+const getUserProfile = async (req, res) => {
+    try {
+        const { username } = req.params;
+        const user = await UserSchema.findOne({ username }).select("-password").select("-updatedAt");
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not Found.",
+            })
+        }
+        res.json({
+            success: true,
+            data: user,
+        })
+
+    } catch (error) {
+        console.log("Error in updateUser function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
 module.exports = {
     register,
     login,
     logout,
     followUnFollowUser,
     updateUser,
+    getUserProfile,
 }
