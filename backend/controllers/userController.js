@@ -88,8 +88,58 @@ const logout = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+
+
+// FOLLOW and UNFOLLOW -- USER
+const followUnFollowUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { _id } = req.user;
+        const userToFollow = await UserSchema.findById(id);
+        const currentUser = await UserSchema.findById(_id);
+
+        if (id === _id) {
+            return res.json({
+                success: false,
+                message: "You cannot follow/unfollow Yourself."
+            });
+        }
+
+        if (!userToFollow || !currentUser) {
+            return res.json({
+                success: false,
+                message: "User doesn't exist."
+            });
+        }
+
+        const isFollowing = currentUser.following.includes(id);
+
+        if (isFollowing) {
+            // unfollowUser
+            await UserSchema.findByIdAndUpdate(id, { $pull: { followers: _id } });
+            await UserSchema.findByIdAndUpdate(_id, { $pull: { following: id } });
+            res.json({
+                success: true,
+                message: "User unfollow successfully."
+            });
+        }
+        else {
+            // followUser
+            await UserSchema.findByIdAndUpdate(id, { $push: { followers: _id } });
+            await UserSchema.findByIdAndUpdate(_id, { $push: { following: id } });
+            res.json({
+                success: true,
+                message: "User follow successfully."
+            });
+        }
+    } catch (error) {
+        console.log("Error in followUnFollowUser function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
 module.exports = {
     register,
     login,
     logout,
+    followUnFollowUser,
 }
