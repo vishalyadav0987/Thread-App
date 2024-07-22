@@ -117,6 +117,7 @@ const deletePost = async (req, res) => {
     }
 }
 
+// LIKE AND DISLIKE POST -- USER
 const likeDislikePost = async (req, res) => {
     try {
         const { id: postId } = req.params;
@@ -151,9 +152,50 @@ const likeDislikePost = async (req, res) => {
 
 }
 
+// REPLIES
+const repliesUserPost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+        const { text } = req.body;
+        const { username } = req.user;
+        const { _id: userId } = req.user;
+        const { profilePic: userProfilePic } = req.user;
+
+        if (!text) {
+            return res.json({
+                success: false,
+                message: "Text field is required.",
+            });
+        }
+
+        const post = await PostSchema.findById(postId);
+
+        if (!post) {
+            return res.json({
+                success: false,
+                message: "Post not Found.",
+            });
+        }
+
+        const reply = { text, username, userId, userProfilePic };
+        post.replies.push(reply);
+        await post.save();
+
+        res.json({
+            success: true,
+            message: "Reply added successfully",
+            data: post,
+        });
+    } catch (error) {
+        console.log("Error in repliesUserPost function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
 module.exports = {
     createPost,
     getPost,
     deletePost,
     likeDislikePost,
+    repliesUserPost,
 }
