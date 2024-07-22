@@ -55,11 +55,36 @@ const createPost = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error in updateUser function ->", error.message);
+        console.log("Error in createPost function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+// GET SINGLE -- USER POST
+const getPost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+
+        const post = await PostSchema.findById(postId);
+
+        if (!post) {
+            return res.json({
+                success: false,
+                message: "Post not Found.",
+            });
+        }
+
+        res.json({
+            success: true,
+            data: post,
+        })
+    } catch (error) {
+        console.log("Error in createPost function ->", error.message);
         res.json({ success: false, message: error.message })
     }
 }
 
 module.exports = {
     createPost,
+    getPost,
 }
