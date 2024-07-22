@@ -117,8 +117,43 @@ const deletePost = async (req, res) => {
     }
 }
 
+const likeDislikePost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+        const { _id: userId } = req.user;
+
+
+        const post = await PostSchema.findById(postId);
+
+        if (!post) {
+            return res.json({
+                success: false,
+                message: "Post not Found.",
+            });
+        }
+        // check kar rahe hai
+        const userLikedPost = post.likes.includes(userId);
+        if (userLikedPost) {
+            // agar like hogi toh dislike [unlike]
+            await PostSchema.updateOne({ _id: postId }, { $pull: { likes: userId } });
+            res.json({ success: true, message: "Post unliked succesfully." });
+        }
+        else {
+            // liked
+            post.likes.push(userId);
+            await post.save();
+            res.json({ success: true, message: "Post liked succesfully." });
+        }
+    } catch (error) {
+        console.log("Error in likeDislikePost function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+
+}
+
 module.exports = {
     createPost,
     getPost,
     deletePost,
+    likeDislikePost,
 }
