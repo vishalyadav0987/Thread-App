@@ -79,7 +79,40 @@ const getPost = async (req, res) => {
             data: post,
         })
     } catch (error) {
-        console.log("Error in createPost function ->", error.message);
+        console.log("Error in getPost function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+//DELETE POST
+const deletePost = async (req, res) => {
+    try {
+        const { id: postId } = req.params;
+        const { _id: userId } = req.user;
+
+        const post = await PostSchema.findById(postId);
+
+        if (!post) {
+            return res.json({
+                success: false,
+                message: "Post not Found.",
+            });
+        }
+
+        if (userId.toString() !== post.postedBy._id.toString()) {
+            return res.json({
+                success: false,
+                message: "Un-Authorized to delete post.",
+            });
+        }
+
+        await PostSchema.findByIdAndDelete(postId);
+        res.json({
+            success: true,
+            message: "Post deleted Successfully."
+        })
+    } catch (error) {
+        console.log("Error in deletePost function ->", error.message);
         res.json({ success: false, message: error.message })
     }
 }
@@ -87,4 +120,5 @@ const getPost = async (req, res) => {
 module.exports = {
     createPost,
     getPost,
+    deletePost,
 }
