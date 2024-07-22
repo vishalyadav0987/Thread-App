@@ -192,10 +192,47 @@ const repliesUserPost = async (req, res) => {
     }
 }
 
+// GET FEEF
+const getFeed = async (req, res) => {
+    try {
+
+        const { _id: userId } = req.user
+        const user = await UserSchema.findById(userId);
+
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not Found.",
+            });
+        }
+
+        // jis jis ko follow kar rakha ho usi ke post show ho gi front pe 
+        // following is arrays of id of multiple user jisko user ne follow kara rakha hai
+        const following = user.following;
+        console.log(following);
+
+        // { $in: following } is a MongoDB operator that matches any value in the array following. The following array contains the IDs of users that the current user is following.
+
+        const feedPosts = await PostSchema.find({
+            postedBy: { $in: following }
+        }).sort({ createdAt: -1 });
+
+        res.json({
+            success: true,
+            data: feedPosts
+        })
+
+    } catch (error) {
+        console.log("Error in getFeed function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
 module.exports = {
     createPost,
     getPost,
     deletePost,
     likeDislikePost,
     repliesUserPost,
+    getFeed,
 }
