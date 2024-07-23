@@ -6,6 +6,7 @@ import { ColorModeScript } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/provider'
 import { mode } from '@chakra-ui/theme-tools'
 import { extendTheme } from '@chakra-ui/theme-utils';
+import { AuthContextProvider } from './Context/AuthContext'
 
 
 
@@ -38,7 +39,9 @@ root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <App />
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
     </ChakraProvider>
   </React.StrictMode>
 );
