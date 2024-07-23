@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const connectDB = require('./connectDB/connect');
 require('dotenv').config();
 const PORT = process.env.PORT || 3000;
@@ -8,10 +9,10 @@ const userRoutes = require('./routes/userRoutes')
 const postRoutes = require('./routes/postRoutes')
 
 
+app.use(cors());
 app.use(express.json());// parse payload data
 app.use(express.urlencoded({ extended: true })); // to parse form data
 app.use(cookieParser())
-
 
 // Routes
 app.use('/api/v1/user', userRoutes)
