@@ -1,6 +1,7 @@
 const { generateTokenAndSetCookie } = require('../generateToken/generateToken');
 const UserSchema = require('../modals/UserShema');
 const bcrypt = require('bcryptjs')
+const clodinary = require('cloudinary')
 
 // REGISTER -- USER
 const register = async (req, res) => {
@@ -35,6 +36,8 @@ const register = async (req, res) => {
                     name: newUser.name,
                     email: newUser.email,
                     username: newUser.username,
+                    bio: newUser.bio,
+                    profilePic: newUser.profilePic
                 }
             })
         }
@@ -53,6 +56,10 @@ const login = async (req, res) => {
         const { username, password } = req.body;
         const user = await UserSchema.findOne({ username });
 
+        if (username.length == 0 || password.length < 1) {
+            return res.json({ success: false, message: "Please field login credentials." })
+        }
+
         if (!user) {
             return res.json({ success: false, message: "Invalid Credentials." })
         }
@@ -67,6 +74,14 @@ const login = async (req, res) => {
         res.json({
             success: true,
             message: "User logged in successfully.",
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                username: user.username,
+                bio: user.bio,
+                profilePic: user.profilePic
+            }
         })
 
     } catch (error) {
@@ -142,7 +157,8 @@ const followUnFollowUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, username, email, password, profilePic, bio } = req.body;
+        const { name, username, email, password, bio } = req.body;
+        let { profilePic } = req.body;
         const userId = req.user._id;
 
         let user = await UserSchema.findById(userId);
@@ -166,6 +182,14 @@ const updateUser = async (req, res) => {
             user.password = hashedPassword;
         }
 
+        if (profilePic) {
+            if (user.profilePic) {
+                await clodinary.v2.uploader.destroy(user.profilePic.split('/').pop().split(".")[0])
+            }
+            const uploadProfileImg = await clodinary.v2.uploader.upload(profilePic);
+            profilePic = uploadProfileImg.secure_url
+        }
+
         user.name = name || user.name;
         user.username = username || user.username;
         user.email = email || user.email;
@@ -177,7 +201,15 @@ const updateUser = async (req, res) => {
 
         res.json({
             success: true,
-            message: "Profile Updated Successfully."
+            message: "Profile Updated Successfully.",
+            data: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                username: user.username,
+                bio: user.bio,
+                profilePic: user.profilePic
+            }
         })
     } catch (error) {
         console.log("Error in updateUser function ->", error.message);
