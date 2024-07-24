@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const UserSchema = require('../modals/UserShema')
 const protectedRoute = async (req, res, next) => {
-    try {
-        const token = req.cookies.token;
+    const token = req.cookies?.token;
 
+    try {
         if (!token) {
             return res.json({ success: false, message: "User Un-Authorized." });
         }
