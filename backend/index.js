@@ -11,7 +11,7 @@ const userRoutes = require('./routes/userRoutes')
 const postRoutes = require('./routes/postRoutes')
 
 
-app.use(express.json());// parse payload data
+app.use(express.json({limit:"50mb"}));// parse payload data
 app.use(express.urlencoded({ extended: true })); // to parse form data
 app.use(cookieParser())
 app.use(cors({
