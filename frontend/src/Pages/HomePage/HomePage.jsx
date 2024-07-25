@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../Context/AuthContext';
 
 const HomePage = () => {
+    const { authUser } = useAuthContext()
     const navigate = useNavigate();
     const handleToJumpProfile = () => {
-        navigate(`/vishal`)
+        navigate(`/${authUser.username}`)
     }
     return (
         <>
