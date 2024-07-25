@@ -8,6 +8,7 @@
 .top-part {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .top-part .name-text {
@@ -31,7 +32,7 @@
 }
 
 .top-part .user-img {
-    width: 7rem;
+    width: 6.5rem;
     background-color: aliceblue;
     border-radius: 50%;
     cursor: pointer;

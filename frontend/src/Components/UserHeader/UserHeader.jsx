@@ -10,8 +10,9 @@ import {
     MenuItem,
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
+import { useAuthContext } from '../../Context/AuthContext'
 
-const UserHeader = () => {
+const UserHeader = ({ user }) => {
     const linkCopyHandler = () => {
         // user id url
         const currentURL = window.location.href;
@@ -26,10 +27,10 @@ const UserHeader = () => {
             <div className="user-header">
                 <div className="top-part">
                     <div className="name-info">
-                        <span className='name-text'>Vishal Yadav</span>
+                        <span className='name-text'>{user && user.name}</span>
                         <div className="username-container">
                             <span className='username'>
-                                vishalyadav0987
+                                {user && user.username}
                             </span>
                             <span className='thread-net-text'>
                                 threads.net
@@ -37,15 +38,20 @@ const UserHeader = () => {
                         </div>
                     </div>
                     <div className="user-img">
-                        <img src='logo192.png' alt="" />
+                        <img src={user && user.profilePic || "./profile.png"} alt="" style={
+                            {
+                                width: "100%",
+                                borderRadius: "50%"
+                            }
+                        } />
                     </div>
                 </div>
                 <div className="middle-part user-bio">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    {user && user.bio}
                 </div>
                 <div className="bottom-part">
                     <div className='follower-info'>
-                        <span>3.2K followers</span>
+                        <span>{user && user.followers.length} followers</span>
                         <span></span>
                         <Link to={'/'}>instagram.com</Link>
                     </div>
