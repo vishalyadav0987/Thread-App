@@ -19,9 +19,12 @@ import { useRef, useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import usePreviewImg from '../../CustomHook/usePreviewImg';
+import { useNavigate } from 'react-router-dom'
 
 export default function UpdateProfile() {
+    const navigate = useNavigate()
     const { authUser, setAuthUser } = useAuthContext();
+    const [loading, setLoding] = useState(false);
     const [data, setData] = useState({
         name: authUser.name,
         username: authUser.username,
@@ -35,6 +38,7 @@ export default function UpdateProfile() {
 
     const handleOnSubmitUpdate = async (e) => {
         e.preventDefault();
+        setLoding(true)
         try {
             const response = await axios.put(
                 `http://localhost:3000/api/v1/user/update/${authUser._id}`,
@@ -62,6 +66,10 @@ export default function UpdateProfile() {
             toast.error(error.message, {
                 className: 'custom-toast', // Custom class for styling)
             })
+        }
+        finally {
+            setLoding(false);
+            navigate(`/${authUser.username}`)
         }
     }
     return (
@@ -182,6 +190,7 @@ export default function UpdateProfile() {
                                 bg: 'green.700',
                             }}
                             type='submit'
+                            isLoading={loading}
                         >
                             Submit
                         </Button>
