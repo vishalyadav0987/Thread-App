@@ -26,6 +26,7 @@ import { useAuthContext } from '../../Context/AuthContext'
 export default function RegisterCard({ setAuthForm }) {
     const [showPassword, setShowPassword] = useState(false);
     const { setAuthUser } = useAuthContext();
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         name: "",
         username: "",
@@ -34,6 +35,7 @@ export default function RegisterCard({ setAuthForm }) {
     });
 
     const handleOnSubmit = async () => {
+        setLoading(true);
         try {
             const response = await axios.post(
                 "http://localhost:3000/api/v1/user/register",
@@ -59,6 +61,8 @@ export default function RegisterCard({ setAuthForm }) {
             toast.error(error.message, {
                 className: 'custom-toast', // Custom class for styling)
             })
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -135,6 +139,7 @@ export default function RegisterCard({ setAuthForm }) {
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button
+                                isLoading={loading}
                                 onClick={handleOnSubmit}
                                 loadingText="Submitting"
                                 size="lg"

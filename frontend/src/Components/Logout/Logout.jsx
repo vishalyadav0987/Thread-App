@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuthContext } from '../../Context/AuthContext'
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -7,7 +7,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const Logout = () => {
     const { setAuthUser } = useAuthContext();
+    const [loading, setLoading] = useState(false);
     const handleOnLogout = async () => {
+        setLoading(true);
         try {
             const response = await axios.get('http://localhost:3000/api/v1/user/logout');
             if (response.data.success) {
@@ -28,6 +30,8 @@ const Logout = () => {
             toast.error(error.message, {
                 className: 'custom-toast', // Custom class for styling)
             })
+        } finally {
+            setLoading(false);
         }
     }
     return (
@@ -38,7 +42,9 @@ const Logout = () => {
                 right: "12px"
 
             }}>
-                <Button onClick={handleOnLogout}>
+                <Button
+                    isLoading={loading}
+                    onClick={handleOnLogout} >
                     <LogoutIcon />
                 </Button>
             </div >

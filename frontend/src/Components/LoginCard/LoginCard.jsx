@@ -25,11 +25,13 @@ import axios from 'axios';
 export default function LoginCard({ setAuthForm }) {
     const [showPassword, setShowPassword] = useState(false);
     const { setAuthUser } = useAuthContext()
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         username: "",
         password: "",
     });
     const handleOnSubmitLogin = async () => {
+        setLoading(true);
         try {
             const response = await axios.post(
                 'http://localhost:3000/api/v1/user/login',
@@ -55,6 +57,8 @@ export default function LoginCard({ setAuthForm }) {
             toast.error(error.message, {
                 className: 'custom-toast', // Custom class for styling)
             })
+        } finally {
+            setLoading(false)
         }
     }
     return (
@@ -113,6 +117,7 @@ export default function LoginCard({ setAuthForm }) {
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button
+                                isLoading={loading}
                                 onClick={handleOnSubmitLogin}
                                 loadingText="Submitting"
                                 size="lg"
