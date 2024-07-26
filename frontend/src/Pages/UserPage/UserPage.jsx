@@ -4,13 +4,16 @@ import UserPost from '../../Components/UserPost/UserPost'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
+import { Spinner } from '@chakra-ui/react'
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
-  const { username } = useParams()
+  const { username } = useParams();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `http://localhost:3000/api/v1/user/profile/${username}`
@@ -24,9 +27,38 @@ const UserPage = () => {
       } catch (error) {
         console.log("Error in fetchUserData Function ->", error.message);
       }
+      finally {
+        setLoading(false);
+      }
     }
     fetchUserData();
   }, [username]);
+
+  if (!user && !loading) {
+    return (
+      <div style={{
+        textAlign: "center",
+        marginTop: "40px",
+        fontFamily: "sans-serif",
+        fontSize: "18px"
+      }}>
+        User not found
+      </div>
+    )
+  }
+
+  if (!user && loading) {
+    return (
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: "35vh"
+      }}>
+        <Spinner size='lg' />
+      </div>
+    )
+  }
 
   if (!user) return null;
   return (
