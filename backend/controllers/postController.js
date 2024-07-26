@@ -198,6 +198,30 @@ const repliesUserPost = async (req, res) => {
     }
 }
 
+// GET POSTS
+const getUserPosts = async (req, res) => {
+    try {
+        const { username } = req.params
+        const { _id: postedBy } = req.user;
+        const user = await UserSchema.findOne({ username });
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not Found.",
+            });
+        }
+
+        const posts = await PostSchema.find({ postedBy: user._id }).sort({ createdAt: -1 });
+        res.json({
+            success: true,
+            data: posts,
+        });
+    } catch (error) {
+        console.log("Error in getUserPosts function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
 // GET FEEF
 const getFeed = async (req, res) => {
     try {
@@ -241,4 +265,5 @@ module.exports = {
     likeDislikePost,
     repliesUserPost,
     getFeed,
+    getUserPosts,
 }
