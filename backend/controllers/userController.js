@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { generateTokenAndSetCookie } = require('../generateToken/generateToken');
 const UserSchema = require('../modals/UserShema');
 const bcrypt = require('bcryptjs')
@@ -220,8 +221,17 @@ const updateUser = async (req, res) => {
 //GET -- USER PROFILE
 const getUserProfile = async (req, res) => {
     try {
-        const { username } = req.params;
-        const user = await UserSchema.findOne({ username }).select("-password").select("-updatedAt");
+        // const { username } = req.params; 1st version
+        // We will fetch user profile eihter usernmae or userId:PostedBy
+        const { query } = req.params; // 2nd version
+        // query either username or id
+        let user;
+        if (mongoose.Types.ObjectId.isValid(query)) {
+            user = await UserSchema.findOne({ _id: query }).select("-password").select("-updatedAt");
+        }
+        else {
+            user = await UserSchema.findOne({ username: query }).select("-password").select("-updatedAt");
+        }
         if (!user) {
             return res.json({
                 success: false,

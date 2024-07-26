@@ -16,7 +16,7 @@ router.route('/login').post(login);
 router.route('/logout').get(logout);
 router.route('/follow/:id').post(protectedRoute, followUnFollowUser);
 router.route('/update/:id').put(protectedRoute, updateUser);
-router.route('/profile/:username').get(getUserProfile);
+router.route('/profile/:query').get(getUserProfile);
 
 
 module.exports = router
