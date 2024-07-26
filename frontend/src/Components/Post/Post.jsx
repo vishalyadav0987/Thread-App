@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Actions from '../Actions/Action';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Text, useColorMode } from '@chakra-ui/react';
+import { Avatar, Text, useColorMode } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns'
 import '../UserPost/UserPost.css'
 
@@ -12,9 +12,8 @@ import '../UserPost/UserPost.css'
 const Post = ({ post }) => {
     const navigate = useNavigate()
     const { colorMode } = useColorMode();
-    const [liked, setLiked] = useState(false);
     const [feedUser, setFeedUser] = useState(null);
-    const { text: postTitle, img: postImg, likes, replies, postedBy,createdAt } = post;
+    const { text: postTitle, img: postImg, likes, replies, postedBy, createdAt } = post;
     useEffect(() => {
         const getProfileOfPostedUser = async () => {
             try {
@@ -45,15 +44,12 @@ const Post = ({ post }) => {
                     <div>
                         {
                             feedUser && (
-                                <img
+                                <Avatar
                                     onClick={(e) => {
                                         e.preventDefault()
                                         navigate(`/${feedUser.username}`)
                                     }}
-                                    src={feedUser.profilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" style={{
-                                        borderRadius: "50%",
-                                        width: "100%"
-                                    }} />
+                                    src={feedUser.profilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={"md"} />
                             )
                         }
                     </div>
@@ -107,14 +103,7 @@ const Post = ({ post }) => {
                             </div>
                         )
                     }
-                    <Actions liked={liked} setLiked={setLiked} />
-                    <div className="bottom-part">
-                        <div className='follower-info'>
-                            <div style={{ color: "#4d4d4d" }}>{post && likes?.length} likes</div>
-                            <span></span>
-                            <span>{post && replies?.length} replies</span>
-                        </div>
-                    </div>
+                    <Actions post={post} />
                 </div>
             </Link>
         </>
