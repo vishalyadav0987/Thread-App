@@ -7,13 +7,16 @@ import toast from 'react-hot-toast';
 import { Avatar, Text, useColorMode } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns'
 import '../UserPost/UserPost.css'
+import { useAuthContext } from '../../Context/AuthContext';
+import { FaRegTrashAlt } from "react-icons/fa";
 
 
 const Post = ({ post }) => {
+    const { authUser } = useAuthContext()
     const navigate = useNavigate()
     const { colorMode } = useColorMode();
     const [feedUser, setFeedUser] = useState(null);
-    const { text: postTitle, img: postImg, likes, replies, postedBy, createdAt } = post;
+    const { text: postTitle, img: postImg, replies, postedBy, createdAt } = post;
     useEffect(() => {
         const getProfileOfPostedUser = async () => {
             try {
@@ -35,6 +38,26 @@ const Post = ({ post }) => {
         }
         getProfileOfPostedUser();
     }, [postedBy]);
+
+    const handleDeletePost = async (postID) => {
+        if(!window.confirm("Are you sure you want to delete this post.")) return;
+        try {
+            const response = await axios.delete(
+                `http://localhost:3000/api/v1/post/${postID}`,
+                { withCredentials: true }
+            );
+            if (response.data.success) {
+                // console.log(response.data.data)
+                setFeedUser(response.data.data)
+            } else {
+                toast.error(response.data.message, {
+                    className: 'custom-toast', // Custom class for styling)
+                })
+            }
+        } catch (error) {
+            console.log("Error in handleDeletePost->", error.message)
+        }
+    }
 
     if (!feedUser) return null;
     return (
@@ -81,7 +104,9 @@ const Post = ({ post }) => {
                         }
                     </div>
                 </div>
-                <div className="right-part">
+                <div className="right-part" style={{
+                    width:"100%"
+                }}>
                     <div className="post-header">
                         <div>
                             <div onClick={(e) => {
@@ -92,7 +117,16 @@ const Post = ({ post }) => {
                         </div>
                         <div>
                             <span>{formatDistanceToNow(new Date(createdAt))} ago</span>
-                            <span><SlOptions style={{ cursor: "pointer" }} /></span>
+                            {
+                                authUser?._id === post.postedBy
+                                    ? <span><FaRegTrashAlt
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDeletePost(post._id)
+                                        }}
+                                        style={{ cursor: "pointer" }} /></span>
+                                    : <span><SlOptions style={{ cursor: "pointer" }} /></span>
+                            }
                         </div>
                     </div>
                     <p className="post-heading">{post && postTitle}</p>
