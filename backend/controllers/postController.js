@@ -1,11 +1,12 @@
 const PostSchema = require('../modals/PostSchema');
 const UserSchema = require('../modals/UserShema');
+const cloudinary = require('cloudinary').v2;
 
 //CREATE POST
 const createPost = async (req, res) => {
     try {
-        const { postedBy, text, img } = req.body;
-
+        const { postedBy, text } = req.body;
+        let { img } = req.body;
         // idhar postedby ka maltalb hai ush user ki id jisne post ki hai
         if (!postedBy || !text) {
             return res.json({
@@ -28,6 +29,11 @@ const createPost = async (req, res) => {
                 success: false,
                 message: "Un-Authorized to create post.",
             })
+        }
+
+        if (img) {
+            const uploadPostImage = await cloudinary.uploader.upload(img);;
+            img = uploadPostImage.secure_url;
         }
 
         const maxLength = 500;
