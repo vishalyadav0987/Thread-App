@@ -3,13 +3,9 @@ import { useColorMode } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
+import { useAuthContext } from '../../Context/AuthContext';
 
-const headerStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: "0.8rem"
-};
+
 
 const imageStyle = {
     width: "40px",
@@ -19,22 +15,38 @@ const imageStyle = {
 
 
 const Header = () => {
-    const { colorMode, toggleColorMode } = useColorMode()
+    const { colorMode, toggleColorMode } = useColorMode();
+    const { authUser } = useAuthContext();
+
+    const headerStyle = {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: `${authUser ? "space-between" : "center"}`,
+        padding: "0.8rem"
+    };
     return (
         <>
             <div className="header" style={headerStyle}>
-                <Link to={'/'}>
-                    <FaHome size={"36px"} />
-                </Link>
+                {
+                    authUser && (
+                        <Link to={'/'}>
+                            <FaHome size={"36px"} />
+                        </Link>
+                    )
+                }
                 <img
                     style={imageStyle}
                     src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                     alt="Logo"
                     onClick={toggleColorMode}
                 />
-                <Link to={'/update'}>
-                    <FaRegUserCircle size={"36px"} />
-                </Link>
+                {
+                    authUser && (
+                        <Link to={'/update'}>
+                            <FaRegUserCircle size={"36px"} />
+                        </Link>
+                    )
+                }
             </div>
         </>
     )
