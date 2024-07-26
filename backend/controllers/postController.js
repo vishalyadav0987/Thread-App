@@ -112,6 +112,11 @@ const deletePost = async (req, res) => {
             });
         }
 
+        if (post.img) {
+            const imageId = post.img.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(imageId)
+        }
+
         await PostSchema.findByIdAndDelete(postId);
         res.json({
             success: true,
