@@ -60,6 +60,7 @@ const CreatePost = () => {
             console.log("Error in CreatePostHandler->", error.message)
         } finally {
             setLoading(false);
+            console.log(postTextSize)
         }
     }
     return (
