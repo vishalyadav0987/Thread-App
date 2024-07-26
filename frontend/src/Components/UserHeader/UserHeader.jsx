@@ -9,12 +9,15 @@ import {
     MenuList,
     MenuItem,
     Button,
+    useColorMode,
+    Avatar,
 } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../Context/AuthContext'
 import axios from 'axios'
 
 const UserHeader = ({ user }) => {
+    const { colorMode } = useColorMode();
     const { authUser } = useAuthContext() //logged in user
     const [loading, setLoading] = useState(false)
     const linkCopyHandler = () => {
@@ -28,7 +31,7 @@ const UserHeader = ({ user }) => {
             })
         })
     }
-    const [isFollowing, setIsFollowing] = useState(user.followers.includes(authUser._id));
+    const [isFollowing, setIsFollowing] = useState(user?.followers.includes(authUser?._id));
     console.log(isFollowing, user._id);
     const handleFollowUnFollow = async () => {
         if (!authUser) {
@@ -43,19 +46,18 @@ const UserHeader = ({ user }) => {
                 {},
                 { headers: { "Content-Type": "application/json" }, withCredentials: true }
             );
-            console.log(response.data)
             if (response.data.success) {
                 if (isFollowing) {
                     toast.success(`Unfollow ${user.name}`, {
                         className: 'custom-toast', // Custom class for styling)
                     });
-                    user.followers.pop();
+                    user?.followers.pop();
                 }
                 else {
                     toast.success(`Follow ${user.name}`, {
                         className: 'custom-toast', // Custom class for styling)
                     });
-                    user.followers.push(authUser._id)
+                    user?.followers.push(authUser?._id)
                 }
                 setIsFollowing(!isFollowing);
             }
@@ -81,18 +83,22 @@ const UserHeader = ({ user }) => {
                             <span className='username'>
                                 {user && user.username}
                             </span>
-                            <span className='thread-net-text'>
+                            <span className='thread-net-text' style={{
+                                backgroundColor: `${colorMode !== "dark" ?"#fff" :"#232323"}`,
+                                color: `${colorMode !== "dark" ? "#000":"#535353"}`
+                            }}>
                                 threads.net
                             </span>
                         </div>
                     </div>
-                    <div className="user-img">
-                        <img src={(user && user.profilePic) || "./profile.png"} alt="" style={
-                            {
-                                width: "100%",
-                                borderRadius: "50%"
-                            }
-                        } />
+                    <div className="user-img" style={{
+                        background: `${colorMode === "dark" ? "#101010" : "#edf2f7"}`
+                    }}>
+                        {
+                            user && (
+                                <Avatar src={(user && user.profilePic) || `${colorMode === "dark" ? "./white-100.png" : "./black-100.png"}`} alt="" size={"xl"} />
+                            )
+                        }
                     </div>
                 </div>
                 <div className="middle-part user-bio">
@@ -100,14 +106,14 @@ const UserHeader = ({ user }) => {
                 </div>
                 <div>
                     {
-                        authUser._id === user._id && (
+                        authUser?._id === user._id && (
                             <Link to={'/update'}>
                                 <Button size={"sm"}>Update profile</Button>
                             </Link>
                         )
                     }
                     {
-                        authUser._id !== user._id && (
+                        authUser?._id !== user._id && (
                             <Button size={"sm"}
                                 onClick={handleFollowUnFollow}
                                 isLoading={loading}
@@ -123,7 +129,7 @@ const UserHeader = ({ user }) => {
                 </div>
                 <div className="bottom-part">
                     <div className='follower-info'>
-                        <span>{user && user.followers.length} followers</span>
+                        <span>{user && user?.followers.length} followers</span>
                         <span></span>
                         <Link to={'/'}>instagram.com</Link>
                     </div>
