@@ -7,11 +7,14 @@ import usePreviewImg from '../../CustomHook/usePreviewImg'
 import axios from 'axios';
 import { useAuthContext } from '../../Context/AuthContext'
 import toast from 'react-hot-toast';
+import { usePostContext } from '../../Context/PostContext';
+import { useParams } from "react-router-dom";
 
 const Max_Text_Size = 500;
 
 
 const CreatePost = () => {
+    const { username } = useParams()
     const { authUser } = useAuthContext()
     const haandleTap = useRef(null)
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -19,6 +22,7 @@ const CreatePost = () => {
     const [postText, setPostText] = useState('');
     const [postTextSize, setPostTextSize] = useState(Max_Text_Size);
     const [loading, setLoading] = useState(false);
+    const { posts, setPosts } = usePostContext()
 
     const handleTextChange = (e) => {
         const textareaValue = e.target.value;
@@ -46,6 +50,9 @@ const CreatePost = () => {
                 toast.success(response.data.message, {
                     className: 'custom-toast', // Custom class for styling)
                 });
+                if (username === authUser.username) {
+                    setPosts([response.data.data, ...posts]);
+                }
                 setPostText("");
                 setImageUrl("")
                 onClose();
@@ -78,7 +85,6 @@ const CreatePost = () => {
                     }} fontSize={"md"}
                 >
                     <FaPlus />
-                    <p>Post</p>
                 </Button>
             </div>
 
