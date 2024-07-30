@@ -7,6 +7,7 @@ import { ChakraProvider } from '@chakra-ui/provider'
 import { mode } from '@chakra-ui/theme-tools'
 import { extendTheme } from '@chakra-ui/theme-utils';
 import { AuthContextProvider } from './Context/AuthContext'
+import { PostContextProvider } from './Context/PostContext';
 
 
 
@@ -36,14 +37,16 @@ const theme = extendTheme({ config, styles, color });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <AuthContextProvider>
+  // <React.StrictMode>
+  <ChakraProvider theme={theme}>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <AuthContextProvider>
+      <PostContextProvider>
         <App />
-      </AuthContextProvider>
-    </ChakraProvider>
-  </React.StrictMode>
+      </PostContextProvider>
+    </AuthContextProvider>
+  </ChakraProvider>
+  // </React.StrictMode>
 );
 
 
