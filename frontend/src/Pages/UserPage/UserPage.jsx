@@ -5,13 +5,14 @@ import { useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { Spinner } from '@chakra-ui/react'
 import Post from '../../Components/Post/Post'
+import { usePostContext } from '../../Context/PostContext'
 
 const UserPage = () => {
   const [user, setUser] = useState(null);
   const { username } = useParams();
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [userAllPosts, setUserAllPosts] = useState([])
+  const { posts, setPosts } = usePostContext()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -43,8 +44,8 @@ const UserPage = () => {
           { withCredentials: true }
         )
         if (response.data.success) {
-          console.log(response.data.data)
-          setUserAllPosts(response.data.data)
+          // console.log(response.data.data)
+          setPosts(response.data.data)
         }
         else {
           toast.error(response.data.message, {
@@ -53,7 +54,7 @@ const UserPage = () => {
         }
       } catch (error) {
         console.log("Error in fetchUserAllPosts Function ->", error.message);
-        setUserAllPosts([])
+        setPosts([])
       }
       finally {
         setLoading2(false);
@@ -61,8 +62,8 @@ const UserPage = () => {
     }
     fetchUserData();
     fetchUserAllPosts();
-  }, [username]);
-
+  }, [username, setPosts]);
+  // console.log(posts)
   if (!user && !loading) {
     return (
       <div style={{
@@ -97,7 +98,7 @@ const UserPage = () => {
       </div>
       {
         !loading2 && (
-          userAllPosts && userAllPosts?.length === 0 && <h1
+          posts && posts?.length === 0 && <h1
             style={{
               textAlign: "center",
               marginTop: "30px",
@@ -123,7 +124,7 @@ const UserPage = () => {
 
       {
         !loading2 && (
-          userAllPosts.length > 0 && userAllPosts.map((post) => {
+          posts.length > 0 && posts.map((post) => {
             return (
               <Post post={post} key={post._id} />
             )
