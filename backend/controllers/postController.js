@@ -196,6 +196,7 @@ const repliesUserPost = async (req, res) => {
             success: true,
             message: "Reply added successfully",
             data: post,
+            reply,
         });
     } catch (error) {
         console.log("Error in repliesUserPost function ->", error.message);
