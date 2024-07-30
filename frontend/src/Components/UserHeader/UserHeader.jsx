@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './UserHeader.css';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaInstagram } from "react-icons/fa";
 import { SlOptions } from "react-icons/sl";
 import {
@@ -17,6 +17,7 @@ import { useAuthContext } from '../../Context/AuthContext'
 import axios from 'axios'
 
 const UserHeader = ({ user }) => {
+    const navigate = useNavigate()
     const { colorMode } = useColorMode();
     const { authUser } = useAuthContext() //logged in user
     const [loading, setLoading] = useState(false)
@@ -38,6 +39,7 @@ const UserHeader = ({ user }) => {
             toast.error('Please Login to follow the user', {
                 className: 'custom-toast', // Custom class for styling)
             });
+            navigate('/auth')
         }
         setLoading(true);
         try {
@@ -84,8 +86,8 @@ const UserHeader = ({ user }) => {
                                 {user && user.username}
                             </span>
                             <span className='thread-net-text' style={{
-                                backgroundColor: `${colorMode !== "dark" ?"#fff" :"#232323"}`,
-                                color: `${colorMode !== "dark" ? "#000":"#535353"}`
+                                backgroundColor: `${colorMode !== "dark" ? "#fff" : "#232323"}`,
+                                color: `${colorMode !== "dark" ? "#000" : "#535353"}`
                             }}>
                                 threads.net
                             </span>
@@ -108,7 +110,7 @@ const UserHeader = ({ user }) => {
                     {
                         authUser?._id === user._id && (
                             <Link to={'/update'}>
-                                <Button size={"sm"}>Update profile</Button>
+                                <Button size={"sm"} border={"1px solid #232323"}>Update profile</Button>
                             </Link>
                         )
                     }
@@ -117,6 +119,7 @@ const UserHeader = ({ user }) => {
                             <Button size={"sm"}
                                 onClick={handleFollowUnFollow}
                                 isLoading={loading}
+                                border={"1px solid #232323"}
                             >
                                 {
                                     isFollowing
@@ -137,7 +140,11 @@ const UserHeader = ({ user }) => {
                         <span><FaInstagram /></span>
 
                         <Menu>
-                            <MenuButton className='menu-icon'>
+                            <MenuButton className='menu-icon' style={
+                                {
+                                    borderColor: `${colorMode === "dark" ? "#fff" : "#323232"}`
+                                }
+                            }>
                                 <SlOptions
                                     style={{
                                         fontSize: "1.5rem",
@@ -146,7 +153,9 @@ const UserHeader = ({ user }) => {
                                 />
                             </MenuButton>
                             <MenuList
-                                bg={"gray.dark"}>
+                                bg={"gray.dark"}
+                                border={"1px solid #323232"}
+                                >
                                 <MenuItem
                                     onClick={linkCopyHandler}
                                     bg={"gray.dark"}
@@ -157,8 +166,8 @@ const UserHeader = ({ user }) => {
                     </div>
                 </div>
                 <div className="slide-thread-replies">
-                    <div className='active-slide'>Threads</div>
-                    <div className='inactive-slide'>Replies</div>
+                    <div className='inactive-slide'>Threads</div>
+                    <div className='active-slide'>Replies</div>
                 </div>
             </div>
         </>
