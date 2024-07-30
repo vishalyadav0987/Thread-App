@@ -13,7 +13,26 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.custom-toast{
+
+.custom-toast {
   background-color: #0d0c15 !important;
   color: #fff !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  scroll-behavior: smooth;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #101010;
+}
+
+.conversation-with:hover{
+  background-color: rgba(128, 128, 128, 0.2);
 }
