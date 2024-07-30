@@ -34,7 +34,7 @@ const sendMessage = async (req, res) => {
         });
 
         await Promise.all([
-            newMessage,
+            newMessage.save(),
             conversation.updateOne({
                 lastMessage: {
                     messageText,
@@ -54,7 +54,39 @@ const sendMessage = async (req, res) => {
     }
 };
 
+// GET MESSAGES
+const getMessage = async (req, res) => {
+    try {
+        const { otherUserId } = req.params;
+        const { _id: userId } = req.user;
+
+
+        const conversation = await ConversationSchema.findOne({
+            participants: { $all: [userId, otherUserId] },
+        })
+
+        if (!conversation) {
+            return res.json({
+                success: false,
+                message: "Conversation not found."
+            })
+        }
+
+        const message = await MessageSchema.find({
+            conversationId: conversation._id
+        }).sort({ createdAt: 1 });
+
+        res.json({
+            success: true,
+            data: message,
+        })
+    } catch (error) {
+        console.log("Error in getMessage function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
 
 module.exports = {
     sendMessage,
+    getMessage,
 }
