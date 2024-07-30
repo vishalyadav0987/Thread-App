@@ -2,8 +2,9 @@ import React from 'react'
 import { useColorMode } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
-import { FaRegUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { useAuthContext } from '../../Context/AuthContext';
+import { AiFillMessage } from "react-icons/ai";
 
 
 
@@ -40,13 +41,26 @@ const Header = () => {
                     alt="Logo"
                     onClick={toggleColorMode}
                 />
-                {
-                    authUser && (
-                        <Link to={'/update'}>
-                            <FaRegUserCircle size={"36px"} />
-                        </Link>
-                    )
-                }
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px"
+                }}>
+                    {
+                        authUser && (
+                            <Link to={'/chat'}>
+                                <AiFillMessage size={"36px"} />
+                            </Link>
+                        )
+                    }
+                    {
+                        authUser && (
+                            <Link to={'/update'}>
+                                <FaUserCircle size={"34px"} />
+                            </Link>
+                        )
+                    }
+                </div>
             </div>
         </>
     )
