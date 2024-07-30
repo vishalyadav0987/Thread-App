@@ -86,7 +86,35 @@ const getMessage = async (req, res) => {
     }
 }
 
+// GET CONVERSATION
+const getConversation = async (req, res) => {
+    const { _id: userId } = req.user;
+    try {
+        const conversations = await ConversationSchema.find({
+            participants: userId  //// woh use jinki id logged user se alag hai
+        }).populate({
+            path: "participants",
+            select: "username profilePic"
+        })
+
+        conversations.forEach((conversation) => {
+            conversation.participants = conversation.participants.filter(
+                (participant) => participant._id.toString() !== userId.toString()
+            );
+        });
+
+        res.json({
+            success: true,
+            data: conversations,
+        })
+    } catch (error) {
+        console.log("Error in getConversation function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
 module.exports = {
     sendMessage,
     getMessage,
+    getConversation,
 }
