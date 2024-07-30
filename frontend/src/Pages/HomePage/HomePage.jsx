@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Spinner } from '@chakra-ui/react';
+import { Button, Spinner, useColorMode } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../../Context/AuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Post from '../../Components/Post/Post';
+import { usePostContext } from '../../Context/PostContext';
 
 
 const HomePage = () => {
+    const { colorMode } = useColorMode()
     const { authUser } = useAuthContext();
-    const [feedPost, setFeedPost] = useState([]);
+    // const [feedPost, setFeedPost] = useState([]);
+    const { posts, setPosts } = usePostContext();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const handleToJumpProfile = () => {
@@ -18,13 +21,14 @@ const HomePage = () => {
     // The posts of users whom the user has followed will be shown
     const getFeedOfUser = async () => {
         setLoading(true);
+        setPosts([])
         try {
             const response = await axios.get(
                 'http://localhost:3000/api/v1/post/feed',
                 { withCredentials: true }
             );
             if (response.data.success) {
-                setFeedPost(response.data.data);
+                setPosts(response.data.data);
                 // console.log(response.data.data);
             } else {
                 toast.error(response.data.message, {
@@ -40,21 +44,25 @@ const HomePage = () => {
 
     useEffect(() => {
         getFeedOfUser();
-    }, [])
+    }, [setPosts])
     return (
         <>
             <div className="button" style={{
                 display: "flex",
                 justifyContent: "center",
                 marginTop: "24px",
-                marginBottom:"30px"
+                marginBottom: "30px"
             }}>
-                <Button onClick={handleToJumpProfile}>
+                <Button onClick={handleToJumpProfile} style={
+                    {
+                        border: `${colorMode !== "dark" ? "1px solid #232323" : "none"}`
+                    }
+                }>
                     Visit Profile Page
                 </Button>
             </div>
             {
-                !loading && feedPost.length === 0 && <h1 style={{
+                !loading && posts.length === 0 && <h1 style={{
                     textAlign: "center",
                     marginTop: "40px",
                     fontFamily: "sans-serif",
@@ -76,7 +84,7 @@ const HomePage = () => {
 
             {
                 !loading && (
-                    feedPost.length > 0 && feedPost.map((post) => {
+                    posts.length > 0 && posts.map((post) => {
                         return (
                             <Post key={post._id} post={post} />
                         )
