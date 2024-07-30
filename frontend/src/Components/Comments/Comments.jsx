@@ -1,37 +1,57 @@
 import React, { useState } from 'react'
 import Actions from '../Actions/Action';
 import { SlOptions } from "react-icons/sl";
+import { useNavigate } from 'react-router-dom';
+import { Avatar, useColorMode } from '@chakra-ui/react';
+import { formatDistanceToNow } from 'date-fns'
 
 
-const Comments = ({comment,likes,createdAt,username,userAvatar}) => {
-    const [liked, setLiked] = useState(false);
+const Comments = ({ reply, lastReply }) => {
+    const navigate = useNavigate();
+    const { colorMode } = useColorMode()
 
     return (
         <div className='comment-section'>
-            <div className="right-part-1" style={{padding:"1rem"}}>
+            <div className="right-part-1" style={{ padding: "1rem" }}>
                 <div className="post-header-1">
                     <div>
-                        <div>
-                            <img src={userAvatar} alt=""  style={{borderRadius:"50%"}}/>
-                        </div>
-                        <div className='ok-1'>{username}</div>
+                        {
+                            reply && (
+                                <div>
+                                    <Avatar
+                                        cursor={"pointer"}
+                                        mr={10}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            navigate(`/${reply.username}`)
+                                        }}
+                                        src={reply.userProfilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={"md"} />
+                                </div>
+                            )
+                        }
+                        <div className='ok-1'
+                            onClick={(e) => {
+                                e.preventDefault()
+                                navigate(`/${reply.username}`)
+                            }}
+                            style={{
+                                marginLeft: "20px",
+                                cursor: "pointer"
+                            }}>{reply && reply.username}</div>
                     </div>
                     <div>
-                        <span>{createdAt}</span>
+                        <span>{"1d"}</span>
                         <span><SlOptions style={{ cursor: "pointer" }} /></span>
                     </div>
                 </div>
-                <p className="post-heading" style={{paddingLeft:"40px",margin:"0"}}>{comment}</p>
-               <div style={{paddingLeft:"40px"}}>
-               <Actions liked={liked} setLiked={setLiked} />
-               </div>
-                <div className="bottom-part" style={{paddingLeft:"40px",margin:"0"}}>
-                    <div className='follower-info'>
-                        <div style={{ color: "#4d4d4d" }}>{likes + (liked ? 1 : 0)} likes</div>
-                    </div>
+                <p className="post-heading" style={{ paddingLeft: "60px", margin: "0" }}>{reply && reply.text}</p>
+                <div style={{ paddingLeft: "40px" }}>
+                    {/* <Actions post={""} /> */}
                 </div>
             </div>
-            <div className="divider"></div>
+            {
+                !lastReply && <div className="divider"></div>
+            }
         </div>
     )
 }
