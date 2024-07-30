@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const { generateTokenAndSetCookie } = require('../generateToken/generateToken');
 const UserSchema = require('../modals/UserShema');
 const bcrypt = require('bcryptjs')
-const clodinary = require('cloudinary')
+const clodinary = require('cloudinary');
+const PostSchema = require('../modals/PostSchema');
 
 // REGISTER -- USER
 const register = async (req, res) => {
@@ -200,6 +201,20 @@ const updateUser = async (req, res) => {
 
         await user.save();
 
+        // jub hum kisi profile pe comment karte hai toh hamara username == vishal aur profile == x
+        // toh agar hum apni profile update karte hai toh username aur profile change nh hogi comment me
+        // isliye hu ye method use kar rahe hai
+
+        await PostSchema.updateMany(
+            { "replies.userId": userId },
+            {
+                $set: {
+                    "replies.$[reply].username": user.username,
+                    "replies.$[reply].userProfilePic": user.profilePic,
+                }
+            },
+            { arrayFilters: [{ "reply.userId": userId }] }
+        )
         res.json({
             success: true,
             message: "Profile Updated Successfully.",
