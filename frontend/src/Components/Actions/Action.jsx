@@ -16,15 +16,19 @@ import { useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import axios from 'axios';
 import { useAuthContext } from '../../Context/AuthContext'
+import { usePostContext } from '../../Context/PostContext'
 import toast from 'react-hot-toast'
 import { useNavigate } from "react-router-dom";
 
-const Actions = ({ post: post_ }) => {
+// const Actions = ({ post:post_}) => {
+const Actions = ({ post }) => {
     const navigate = useNavigate()
     const { authUser } = useAuthContext()
-    const [liked, setLiked] = useState(post_.likes?.includes(authUser?._id));
+    // const [liked, setLiked] = useState(post_.likes?.includes(authUser?._id));
+    const [liked, setLiked] = useState(post.likes?.includes(authUser?._id));
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const [post, setPost] = useState(post_)
+    // const [post, setPost] = useState(post_)
+    const { posts, setPosts } = usePostContext()
     const [replyText, setReplyText] = useState("");
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
@@ -46,7 +50,14 @@ const Actions = ({ post: post_ }) => {
                 { headers: { "Content-Type": "application/json" }, withCredentials: true },
             );
             if (response.data.success) {
-                setPost({ ...post, replies: [...post.replies, response.data.reply] })
+                // setPost({ ...post, replies: [...post.replies, response.data.reply] })
+                const updatedPosts = posts.map((postFindInArray) => {
+                    if (postFindInArray._id === post._id) {
+                        return { ...postFindInArray, replies: [...postFindInArray.replies, response.data.reply] }
+                    }
+                    return postFindInArray;
+                })
+                setPosts(updatedPosts);
                 toast.success(response.data.message, {
                     className: 'custom-toast', // Custom class for styling)
                 })
@@ -90,14 +101,29 @@ const Actions = ({ post: post_ }) => {
             if (response.data.success) {
                 if (!liked) {
                     // add the id of authuser:login user to likes array
-                    setPost({ ...post, likes: [...post.likes, authUser._id] })
+                    // setPost({ ...post, likes: [...post.likes, authUser._id] })
+                    const updatedPosts = posts.map((postFindInArray) => {
+                        if (postFindInArray._id === post._id) {
+                            return { ...postFindInArray, likes: [...postFindInArray.likes, authUser?._id] }
+                        }
+                        return postFindInArray;
+                    })
+                    setPosts(updatedPosts);
                     toast.success(response.data.message, {
                         className: 'custom-toast', // Custom class for styling)
                     });
+
                 }
                 else {
                     // remove id of login user from likes array if liked the post
-                    setPost({ ...post, likes: post.likes.filter(id => id !== authUser._id) })
+                    // setPost({ ...post, likes: post.likes.filter(id => id !== authUser._id) })
+                    const updatedPosts = posts.map((postFindInArray) => {
+                        if (postFindInArray._id === post?._id) {
+                            return { ...postFindInArray, likes: postFindInArray.likes.filter((userId) => userId !== authUser?._id) }
+                        }
+                        return postFindInArray;
+                    })
+                    setPosts(updatedPosts);
                     toast.success(response.data.message, {
                         className: 'custom-toast', // Custom class for styling)
                     });
