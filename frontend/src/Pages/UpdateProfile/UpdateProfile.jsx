@@ -36,6 +36,10 @@ export default function UpdateProfile() {
 
     const { imageChangeHandle, imageUrl } = usePreviewImg();
 
+    const handleCancelUpdate = () => {
+        navigate(`/${authUser.username}`)
+    }
+
     const handleOnSubmitUpdate = async (e) => {
         e.preventDefault();
         setLoding(true)
@@ -69,7 +73,7 @@ export default function UpdateProfile() {
         }
         finally {
             setLoding(false);
-            navigate(`/${authUser.username}`)
+            navigate(`/`)
         }
     }
     return (
@@ -174,6 +178,7 @@ export default function UpdateProfile() {
                     </FormControl>
                     <Stack spacing={6} direction={['column', 'row']}>
                         <Button
+                            onClick={handleCancelUpdate}
                             bg={'red.400'}
                             color={'white'}
                             w="full"
