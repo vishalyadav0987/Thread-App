@@ -9,6 +9,7 @@ import { formatDistanceToNow } from 'date-fns'
 import '../UserPost/UserPost.css'
 import { useAuthContext } from '../../Context/AuthContext';
 import { FaRegTrashAlt } from "react-icons/fa";
+import { usePostContext } from '../../Context/PostContext'
 
 
 const Post = ({ post }) => {
@@ -16,6 +17,7 @@ const Post = ({ post }) => {
     const navigate = useNavigate()
     const { colorMode } = useColorMode();
     const [feedUser, setFeedUser] = useState(null);
+    const { posts, setPosts } = usePostContext()
     const { text: postTitle, img: postImg, replies, postedBy, createdAt } = post;
     useEffect(() => {
         const getProfileOfPostedUser = async () => {
@@ -40,7 +42,7 @@ const Post = ({ post }) => {
     }, [postedBy]);
 
     const handleDeletePost = async (postID) => {
-        if(!window.confirm("Are you sure you want to delete this post.")) return;
+        if (!window.confirm("Are you sure you want to delete this post.")) return;
         try {
             const response = await axios.delete(
                 `http://localhost:3000/api/v1/post/${postID}`,
@@ -48,7 +50,10 @@ const Post = ({ post }) => {
             );
             if (response.data.success) {
                 // console.log(response.data.data)
-                setFeedUser(response.data.data)
+                toast.success(response.data.message, {
+                    className: 'custom-toast', // Custom class for styling)
+                })
+                setPosts(posts.filter((p) => p._id !== post._id))
             } else {
                 toast.error(response.data.message, {
                     className: 'custom-toast', // Custom class for styling)
@@ -68,6 +73,7 @@ const Post = ({ post }) => {
                         {
                             feedUser && (
                                 <Avatar
+                                    cursor={"pointer"}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         navigate(`/${feedUser.username}`)
@@ -105,7 +111,7 @@ const Post = ({ post }) => {
                     </div>
                 </div>
                 <div className="right-part" style={{
-                    width:"100%"
+                    width: "100%"
                 }}>
                     <div className="post-header">
                         <div>
