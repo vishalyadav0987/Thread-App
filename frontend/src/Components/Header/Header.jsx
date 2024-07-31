@@ -1,15 +1,14 @@
 import React from 'react'
-import { useColorMode } from '@chakra-ui/react'
+import { Avatar, useColorMode } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
-import { FaUserCircle } from "react-icons/fa";
 import { useAuthContext } from '../../Context/AuthContext';
-import { AiFillMessage } from "react-icons/ai";
+import { BiSolidMessageRoundedAdd } from "react-icons/bi";
 
 
 
 const imageStyle = {
-    width: "40px",
+    width: "36px",
     cursor: "pointer"
 }
 
@@ -49,14 +48,15 @@ const Header = () => {
                     {
                         authUser && (
                             <Link to={'/chat'}>
-                                <AiFillMessage size={"36px"} />
+                                <BiSolidMessageRoundedAdd size={"36px"} />
                             </Link>
                         )
                     }
                     {
                         authUser && (
                             <Link to={'/update'}>
-                                <FaUserCircle size={"34px"} />
+                                <Avatar size={"sm"}
+                                    src={authUser?.profilePic} border={"1px solid #fff"} />
                             </Link>
                         )
                     }
