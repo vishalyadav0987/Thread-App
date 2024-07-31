@@ -1,5 +1,6 @@
 import { Avatar } from '@chakra-ui/react'
 import React from 'react'
+import './Messages.css'
 import { useAuthContext } from '../../Context/AuthContext'
 import { useMessageContext } from '../../Context/MessageContext';
 
@@ -29,11 +30,11 @@ const Messages = ({ ownMessage, message }) => {
                         size={"sm"}
                     />
                     <div
-                        style={{
-                            background: `${ownMessage ? "gray" : "#232323"}`,
-                            padding: "0.4rem 0.6rem",
-                            borderRadius: "4px"
-                        }}
+                        className={`bubble ${ownMessage ? "left" : "right"}`}
+                    style={{
+                        background: `${ownMessage ? "gray" : "#101010"}`,
+                        padding: "0.4rem 0.6rem",
+                    }}
                     >{message && message.messageText}</div>
                 </div>
             </div>
