@@ -8,18 +8,23 @@ import { useMessageContext } from '../../Context/MessageContext'
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../Context/AuthContext'
+import useConversationWithUserSearch from '../../CustomHook/useConversationWithUserSearch'
+import { useSocketContext } from '../../Context/SocketContext'
 
 const ChatPage = () => {
   const { authUser } = useAuthContext()
   const { conversations,
     setConversations,
     selectedConversation,
-    setSelectedConversation
+    // setSelectedConversation
   } = useMessageContext();
   const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-
+  const { handleSearchConversationUser,
+    searchValue,
+    setSearchValue,
+    loading2
+  } = useConversationWithUserSearch();
+  const { onlineUsers } = useSocketContext()
 
   useEffect(() => {
     const getConversation = async () => {
@@ -52,70 +57,7 @@ const ChatPage = () => {
   }, [setConversations]);
 
 
-  const handleSearchConversationUser = async () => {
-    setLoading2(true);
-    if (!searchValue) {
-      toast.error("You can search by empty field", {
-        className: 'custom-toast', // Custom class for styling)
-      });
-      setLoading2(false)
-      return;
-    }
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/v1/user/profile/${searchValue}`,
-        { withCredentials: true }
-      );
-      if (!response.data.success) {
-        toast.error(response.data.message, {
-          className: 'custom-toast', // Custom class for styling)
-        });
-      }
-      const messagingYourself = response.data.data?._id === authUser?._id;
-      if (messagingYourself) {
-        toast.error("you can't message yourself", {
-          className: 'custom-toast', // Custom class for styling)
-        });
-        return;
-      }
 
-      const conversationUserExist = conversations.find((conversation) =>
-        conversation.participants[0]?._id === response.data.data?._id
-      );
-      if (conversationUserExist) {
-        setSelectedConversation({
-          _id: conversationUserExist?._id,
-          username: response.data.data.username,
-          userId: response.data.data?._id,
-          userProfilePic: response.data.data.profilePic,
-        });
-        return;
-      }
-      const mockConversation = {
-        mock: true,
-        lastMessage: {
-          text: "",
-          senderId: "",
-        },
-        _id: Date.now(),
-        participants: [
-          {
-            _id: response.data.data?._id,
-            username: response.data.data.username,
-            profilePic: response.data.data.profilePic,
-          },
-        ],
-      };
-      setConversations((prevConvs) => [...prevConvs, mockConversation]);
-    } catch (error) {
-      console.log("Error in handleSearchConversationUser function fronted->", error.message)
-      toast.error(error.message, {
-        className: 'custom-toast', // Custom class for styling)
-      });
-    } finally {
-      setLoading2(false);
-    }
-  }
   return (
     <>
       <div className="chat-container" style={{
@@ -181,13 +123,14 @@ const ChatPage = () => {
                 <Conversations
                   key={conversation?._id}
                   conversation={conversation}
+                  isOnline={onlineUsers?.includes(conversation.participants[0]._id)}
                 />
               ))}
           </div>
         </div>
         <div
           style={{
-            background: "#212728",
+            background: "#1e1e1e",
             flex: "0.6",
             boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
             borderRadius: "0 6px 6px 0",
