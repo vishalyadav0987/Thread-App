@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const connectDB = require('./connectDB/connect');
 require('dotenv').config();
@@ -10,7 +9,7 @@ const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
 const postRoutes = require('./routes/postRoutes')
 const messageRoutes = require('./routes/messageRoutes')
-
+const {app,server} = require('./socket/socket')
 
 app.use(express.json({ limit: "50mb" }));// parse payload data
 app.use(express.urlencoded({ extended: true })); // to parse form data
@@ -40,7 +39,7 @@ app.get('/test', (req, res) => {
 const start = async () => {
     try {
         await connectDB(process.env.MONGO_URI);
-        app.listen(PORT, () => {
+        server.listen(PORT, () => {
             console.log(`Server running at http://localhost:${PORT}`);
         })
     } catch (error) {
