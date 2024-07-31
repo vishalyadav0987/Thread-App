@@ -1,5 +1,6 @@
 const MessageSchema = require('../modals/MessageSchema');
 const ConversationSchema = require('../modals/ConversationSchema');
+const { getRecieverSocketId,io } = require('../socket/socket')
 
 
 // SEND MESSAGE
@@ -42,6 +43,13 @@ const sendMessage = async (req, res) => {
                 },
             }),
         ])
+
+        const recieverIdSocketId = getRecieverSocketId(recieverId)
+        if(recieverIdSocketId){
+            io.to(recieverIdSocketId).emit("newMessage",newMessage);
+            // one to one user conversation use io.to
+            // newMessage is event
+        }
 
         res.status(201).json({
             success: true,
