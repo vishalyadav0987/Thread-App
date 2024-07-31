@@ -8,6 +8,7 @@ import { mode } from '@chakra-ui/theme-tools'
 import { extendTheme } from '@chakra-ui/theme-utils';
 import { AuthContextProvider } from './Context/AuthContext'
 import { PostContextProvider } from './Context/PostContext';
+import { MessageContextProvider } from './Context/MessageContext';
 
 
 
@@ -42,7 +43,9 @@ root.render(
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <AuthContextProvider>
       <PostContextProvider>
-        <App />
+        <MessageContextProvider>
+          <App />
+        </MessageContextProvider>
       </PostContextProvider>
     </AuthContextProvider>
   </ChakraProvider>
