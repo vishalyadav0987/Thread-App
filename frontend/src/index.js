@@ -9,6 +9,7 @@ import { extendTheme } from '@chakra-ui/theme-utils';
 import { AuthContextProvider } from './Context/AuthContext'
 import { PostContextProvider } from './Context/PostContext';
 import { MessageContextProvider } from './Context/MessageContext';
+import { SocketContextProvider } from './Context/SocketContext';
 
 
 
@@ -44,7 +45,9 @@ root.render(
     <AuthContextProvider>
       <PostContextProvider>
         <MessageContextProvider>
-          <App />
+          <SocketContextProvider>
+            <App />
+          </SocketContextProvider>
         </MessageContextProvider>
       </PostContextProvider>
     </AuthContextProvider>

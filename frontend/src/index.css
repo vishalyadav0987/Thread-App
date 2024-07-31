@@ -25,12 +25,8 @@ code {
 }
 
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
-
 ::-webkit-scrollbar-thumb {
-  background-color: #101010;
+  background-color: rgba(128, 128, 128, 0.795);
 }
 
 .conversation-with:hover{
