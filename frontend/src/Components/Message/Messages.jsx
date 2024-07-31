@@ -1,8 +1,14 @@
 import { Avatar } from '@chakra-ui/react'
 import React from 'react'
+import { useAuthContext } from '../../Context/AuthContext'
+import { useMessageContext } from '../../Context/MessageContext';
 
 
-const Messages = ({ ownMessage }) => {
+const Messages = ({ ownMessage, message }) => {
+    const { authUser } = useAuthContext();
+    const { selectedConversation } = useMessageContext()
+    console.log(authUser?.profilePic, selectedConversation.userProfilePic)
+
     return (
         <>
             <div style={{
@@ -18,14 +24,17 @@ const Messages = ({ ownMessage }) => {
                     width: "80%",
                     fontSize: "16px",
                 }}>
-                    <Avatar scr='./profile.png' size={"sm"} />
+                    <Avatar
+                        src={`${ownMessage ? selectedConversation.userProfilePic : authUser?.profilePic}`}
+                        size={"sm"}
+                    />
                     <div
                         style={{
                             background: `${ownMessage ? "gray" : "#232323"}`,
-                            padding: "0.6rem 0.3rem",
+                            padding: "0.4rem 0.6rem",
                             borderRadius: "4px"
                         }}
-                    >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum, vitae!</div>
+                    >{message && message.messageText}</div>
                 </div>
             </div>
         </>
