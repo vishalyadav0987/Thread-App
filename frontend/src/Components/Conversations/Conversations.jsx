@@ -4,7 +4,7 @@ import { useAuthContext } from '../../Context/AuthContext'
 import { BsCheck2All } from "react-icons/bs";
 import { useMessageContext } from '../../Context/MessageContext';
 
-const Conversations = ({ conversation }) => {
+const Conversations = ({ conversation, isOnline }) => {
     const participants = conversation.participants[0];
     const { authUser } = useAuthContext();
     const { selectedConversation, setSelectedConversation } = useMessageContext();
@@ -42,7 +42,7 @@ const Conversations = ({ conversation }) => {
                                 <AvatarGroup size="md" max={2}>
                                     <Avatar
                                         src={participants?.profilePic} alt="User profile" name="User Name">
-                                        <AvatarBadge boxSize="1em" bg="green.500" />
+                                        {isOnline ? <AvatarBadge boxSize="1em" bg="green.500" /> : ""}
                                     </Avatar>
                                 </AvatarGroup>
                             )
