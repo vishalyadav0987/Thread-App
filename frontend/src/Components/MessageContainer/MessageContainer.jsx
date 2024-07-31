@@ -6,14 +6,43 @@ import { useMessageContext } from '../../Context/MessageContext'
 import axios from 'axios';
 import toast from 'react-hot-toast'
 import { useAuthContext } from '../../Context/AuthContext'
+import { useSocketContext } from '../../Context/SocketContext'
 
 const MessageContainer = () => {
     const { selectedConversation,
         messages,
-        setMessages
+        setMessages,
+        setConversations,
     } = useMessageContext();
     const { authUser } = useAuthContext()
     const [loading, setLoading] = useState(false);
+    const { socket } = useSocketContext();
+    useEffect(() => {
+        socket.on("newMessage", (newMesage) => {
+
+            if (selectedConversation._id === newMesage.conversationId) {
+                setMessages((prevMessage) => [...prevMessage, newMesage]);
+            }
+
+            setConversations((prev) => {
+                const updatedConversations = prev.map((conversation) => {
+                    if (conversation._id === newMesage.conversationId) {
+                        return {
+                            ...conversation,
+                            lastMessage: {
+                                messageText: newMesage.messageText,
+                                senderId: newMesage.senderId
+                            },
+                        };
+                    }
+                    return conversation;
+                });
+                return updatedConversations;
+            });
+        });
+
+        return () => socket.off("newMessage")
+    }, [socket,selectedConversation,setConversations])
     useEffect(() => {
         const getMessages = async () => {
             setLoading(true);
@@ -43,7 +72,7 @@ const MessageContainer = () => {
             }
         }
         getMessages();
-    }, [selectedConversation?.userId])
+    }, [selectedConversation?.userId,selectedConversation?.mock])
 
     const lastMessageRef = useRef();
 
@@ -62,7 +91,8 @@ const MessageContainer = () => {
                     alignItems: "center",
                     gap: "10px",
                     background: "#1e1e1e",
-                    padding: "0.5rem 0.4rem"
+                    padding: "0.5rem 0.4rem",
+                    borderBottom: "1px solid #323232"
                 }}>
                     <Avatar
                         src={selectedConversation && selectedConversation?.userProfilePic} size={"sm"} />
