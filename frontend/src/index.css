@@ -29,6 +29,62 @@ code {
   background-color: rgba(128, 128, 128, 0.795);
 }
 
-.conversation-with:hover{
+.conversation-with:hover {
   background-color: rgba(128, 128, 128, 0.2);
+}
+
+
+@media (max-width:700px) {
+  svg {
+    font-size: 12px;
+  }
+
+  .header img {
+    width: 22px;
+  }
+
+  .comment-section .post-heading {
+    padding-left: 48px !important;
+    font-size: 12px !important;
+
+  }
+
+  .comment-section .ok-1 {
+    margin-left: 8px !important;
+    font-size: 14px;
+  }
+
+  .single-post .leave-comment-box {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .single-post .right-part-1 {
+    padding: 1.5rem 0;
+  }
+
+  .warning-section {
+    margin: 20px 16px !important;
+    padding: 0 10px !important;
+  }
+
+  .warning-section h1 {
+    font-size: 1.5rem !important;
+
+  }
+  .warning-section h3{
+    font-size: 14px !important;
+  }
+  .img-preview{
+    justify-content: start !important;
+  }
+
+  .header{
+    padding: 12px 0 !important;
+  }
+  .header a svg{
+    font-size: 5px !important;
+  }
+  .button-logout{
+    bottom:-130px !important;
+  }
 }

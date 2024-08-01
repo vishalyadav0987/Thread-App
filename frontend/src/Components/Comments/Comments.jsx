@@ -23,7 +23,7 @@ const Comments = ({ reply, lastReply }) => {
                                             e.preventDefault()
                                             navigate(`/${reply.username}`)
                                         }}
-                                        src={reply.userProfilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={"md"} />
+                                        src={reply.userProfilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={{ base: 'sm', md: 'md', lg: 'md' }}/>
                                 </div>
                             )
                         }

@@ -107,3 +107,23 @@ a {
     cursor: pointer;
     color: #4d4d4d;
 }
+
+@media (max-width:700px) {
+    .user-header{
+        padding: 1.4rem 0;
+    }
+    .options svg{
+        font-size: 20px;
+    }
+   .top-part .name-info  .username-container{
+        flex-direction: column;
+        gap: 8px;
+        align-items: baseline;
+    }
+    .options button span svg{
+        font-size: 18px !important;
+    }
+   .bottom-part .options{
+        gap: 0.5rem;
+    }
+}

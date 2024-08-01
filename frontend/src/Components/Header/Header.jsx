@@ -1,5 +1,5 @@
 import React from 'react'
-import { Avatar, useColorMode } from '@chakra-ui/react'
+import { Avatar, Icon, Image, useColorMode } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { useAuthContext } from '../../Context/AuthContext';
@@ -17,7 +17,7 @@ const imageStyle = {
 const Header = ({ setAuthForm }) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const { authUser } = useAuthContext();
-    
+
 
     const headerStyle = {
         display: "flex",
@@ -26,21 +26,26 @@ const Header = ({ setAuthForm }) => {
         padding: "0.8rem"
     };
 
-   
+
     return (
         <>
             <div className="header" style={headerStyle}>
                 {
                     authUser ? (
                         <Link to={'/'}>
-                            <FaHome size={"36px"} />
+                            {/* <FaHome size={"36px"} /> */}
+                            <Icon
+                                as={FaHome} // Set the icon component
+                                boxSize={{ base: '24px', sm: '30px', md: '36px', lg: '36px' }} 
+                                color="fff" // Example color
+                            />
                         </Link>
                     ) : (<Link to={'/auth'}
                         style={{ cursor: "pointer" }}
                         onClick={() => { setAuthForm("Login") }}>Login</Link>)
                 }
-                <img
-                    style={imageStyle}
+                <Image
+                 boxSize={{ base: '40px', sm: '40px', md: '40px', lg: '36px' }} // Responsive size
                     src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                     alt="Logo"
                     onClick={toggleColorMode}
@@ -53,14 +58,24 @@ const Header = ({ setAuthForm }) => {
                     {
                         authUser && (
                             <Link to={'/chat'}>
-                                <BiSolidMessageRoundedAdd size={"36px"} />
+                                {/* <BiSolidMessageRoundedAdd size={"36px"} /> */}
+                                <Icon
+                                as={BiSolidMessageRoundedAdd} // Set the icon component
+                                boxSize={{ base: '24px', sm: '30px', md: '36px', lg: '36px' }} 
+                                color="fff" // Example color
+                            />
                             </Link>
                         )
                     }
                     {
                         authUser && (
                             <Link to={'/setting'}>
-                                <IoSettingsOutline size={"33px"} />
+                                {/* <IoSettingsOutline size={"33px"} /> */}
+                                <Icon
+                                as={IoSettingsOutline} // Set the icon component
+                                boxSize={{ base: '24px', sm: '30px', md: '36px', lg: '34px' }} 
+                                color="fff" // Example color
+                            />
                             </Link>
                         )
                     }

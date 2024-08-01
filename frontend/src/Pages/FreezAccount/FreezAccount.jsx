@@ -71,7 +71,7 @@ const FreezAccount = () => {
             </div>
             <Modal onClose={onClose} isOpen={isOpen} isCentered >
                 <ModalOverlay />
-                <ModalContent >
+                <ModalContent maxW={{ base: '90%', sm: '80%', md: '60%', lg: '30%' }}>
                     <ModalHeader>You Want To Freez Account</ModalHeader>
                     <ModalBody>
                         Rhende de bhai moj kar ❤️

@@ -193,9 +193,9 @@ const Actions = ({ post }) => {
                 <RepostSVG />
                 <ShareSVG />
             </Flex>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent bg={"gray.900"}>
+                <ModalContent bg={"gray.900"} maxW={{ base: '90%', sm: '80%', md: '60%', lg: '30%' }} >
                     <ModalHeader>Reply</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>

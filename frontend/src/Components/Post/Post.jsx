@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Actions from '../Actions/Action';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Avatar, Text, useColorMode } from '@chakra-ui/react';
+import { Avatar, Image, Text, useColorMode } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns'
 import '../UserPost/UserPost.css'
 import { useAuthContext } from '../../Context/AuthContext';
@@ -73,12 +73,13 @@ const Post = ({ post }) => {
                         {
                             feedUser && (
                                 <Avatar
+                                size={{base:'sm', md: 'md',lg:'md'}}
                                     cursor={"pointer"}
                                     onClick={(e) => {
                                         e.preventDefault()
                                         navigate(`/${feedUser.username}`)
                                     }}
-                                    src={feedUser.profilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={"md"} />
+                                    src={feedUser.profilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" />
                             )
                         }
                     </div>
@@ -139,7 +140,7 @@ const Post = ({ post }) => {
                     {
                         postImg && (
                             <div className='user-post-img' style={{ marginBottom: "0.8rem" }}>
-                                <img src={postImg} alt="" />
+                                <Image src={postImg} alt="" />
                             </div>
                         )
                     }

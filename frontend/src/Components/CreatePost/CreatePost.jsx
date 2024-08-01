@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useColorModeValue, useDisclosure } from '@chakra-ui/react'
+import { Button, Image, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Textarea, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import { FaPlus } from "react-icons/fa";
 import { LuImagePlus } from "react-icons/lu";
 import { ImCross } from "react-icons/im";
@@ -88,11 +88,11 @@ const CreatePost = () => {
                 </Button>
             </div>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent bg={"gray.900"}>
+                <ModalContent bg={"gray.900"} maxW={{ base: '90%', sm: '80%', md: '60%', lg: '30%' }}>
                     <ModalHeader>Create Post</ModalHeader>
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
                     <ModalBody>
                         <form >
                             <div className="for-textarea">
@@ -128,12 +128,11 @@ const CreatePost = () => {
                                 }>
                                     {
                                         imageUrl && (
-                                            <img src={imageUrl ? imageUrl : ""} alt=""
-                                                style={{
-                                                    borderRadius: "6px",
-                                                    width: "100%",
-
-                                                }}
+                                            <Image src={imageUrl ? imageUrl : ""} alt=""
+                                                borderRadius={"md"}
+                                                boxSize={{ base: '240px', sm: '150px', md: '100%', lg: '100%' }} // Responsive size
+                                                // objectFit="cover" // Ensures the image covers the container while preserving aspect ratio
+                                                bgPosition={"center"}
                                             />
                                         )
                                     }

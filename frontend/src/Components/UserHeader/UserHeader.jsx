@@ -99,7 +99,7 @@ const UserHeader = ({ user }) => {
                     }}>
                         {
                             user && (
-                                <Avatar src={(user && user.profilePic) || `${colorMode === "dark" ? "./white-100.png" : "./black-100.png"}`} alt="" size={"xl"} />
+                                <Avatar src={(user && user.profilePic) || `${colorMode === "dark" ? "./white-100.png" : "./black-100.png"}`} alt="" size={{ base: 'xl', md: 'md', lg: 'xl' }} />
                             )
                         }
                     </div>
