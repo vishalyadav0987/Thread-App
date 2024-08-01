@@ -62,6 +62,11 @@ const login = async (req, res) => {
             return res.json({ success: false, message: "Please field login credentials." })
         }
 
+        if (user.isFreezAccount) {
+            user.isFreezAccount = false;
+            await user.save();
+        }
+
         if (!user) {
             return res.json({ success: false, message: "Invalid Credentials." })
         }
@@ -259,7 +264,29 @@ const getUserProfile = async (req, res) => {
         })
 
     } catch (error) {
-        console.log("Error in updateUser function ->", error.message);
+        console.log("Error in getUserProfile function ->", error.message);
+        res.json({ success: false, message: error.message })
+    }
+}
+
+const freezAccount = async (req, res) => {
+    try {
+        const { _id: userId } = req.user;
+        const user = await UserSchema.findById(userId);
+
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not Found.",
+            })
+        }
+
+        user.isFreezAccount = true;
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Account Successfully freezed" });
+    } catch (error) {
+        console.log("Error in FreezAccount function ->", error.message);
         res.json({ success: false, message: error.message })
     }
 }
@@ -270,4 +297,5 @@ module.exports = {
     followUnFollowUser,
     updateUser,
     getUserProfile,
+    freezAccount,
 }

@@ -245,7 +245,6 @@ const getFeed = async (req, res) => {
         // jis jis ko follow kar rakha ho usi ke post show ho gi front pe 
         // following is arrays of id of multiple user jisko user ne follow kara rakha hai
         const following = user.following;
-        console.log(following);
 
         // { $in: following } is a MongoDB operator that matches any value in the array following. The following array contains the IDs of users that the current user is following.
 
