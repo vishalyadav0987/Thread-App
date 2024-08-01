@@ -3,6 +3,7 @@ import React from 'react'
 import { useAuthContext } from '../../Context/AuthContext'
 import { BsCheck2All } from "react-icons/bs";
 import { useMessageContext } from '../../Context/MessageContext';
+import { MdImage } from "react-icons/md";
 
 const Conversations = ({ conversation, isOnline }) => {
     const participants = conversation.participants[0];
@@ -72,6 +73,14 @@ const Conversations = ({ conversation, isOnline }) => {
                             {conversation && conversation.lastMessage?.messageText?.length > 20
                                 ? conversation.lastMessage?.messageText.substring(0, 20) + "..."
                                 : conversation.lastMessage?.messageText
+                            }
+                            {
+                                conversation.lastMessage?.messageText?.length === 0 && (
+                                    <>
+                                        <MdImage />
+                                        Photo
+                                    </>
+                                )
                             }
                         </span>
                     </div>
