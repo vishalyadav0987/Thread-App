@@ -48,7 +48,7 @@ const MessageContainer = () => {
         });
 
         return () => socket.off("newMessage")
-    }, [socket, selectedConversation, setConversations]);
+    }, [socket, selectedConversation, setConversations, setMessages]);
 
 
     useEffect(() => {
@@ -78,7 +78,7 @@ const MessageContainer = () => {
                 })
             }
         })
-    }, [socket, selectedConversation, authUser?._id, messages])
+    }, [socket, selectedConversation, authUser?._id, messages, setMessages])
 
 
 
@@ -111,7 +111,7 @@ const MessageContainer = () => {
             }
         }
         getMessages();
-    }, [selectedConversation?.userId, selectedConversation?.mock])
+    }, [selectedConversation?.userId, selectedConversation?.mock, setMessages])
 
     const lastMessageRef = useRef();
 
