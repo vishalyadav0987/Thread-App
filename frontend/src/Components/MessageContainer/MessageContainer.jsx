@@ -7,6 +7,8 @@ import axios from 'axios';
 import toast from 'react-hot-toast'
 import { useAuthContext } from '../../Context/AuthContext'
 import { useSocketContext } from '../../Context/SocketContext'
+import MessageSound from '../../../src/assests/message.mp3'
+
 
 const MessageContainer = () => {
     const { selectedConversation,
@@ -24,6 +26,10 @@ const MessageContainer = () => {
                 setMessages((prevMessage) => [...prevMessage, newMesage]);
             }
 
+            if (!document.hasFocus()) {
+                const sound = new Audio(MessageSound);
+                sound.play();
+            }
             setConversations((prev) => {
                 const updatedConversations = prev.map((conversation) => {
                     if (conversation._id === newMesage.conversationId) {
