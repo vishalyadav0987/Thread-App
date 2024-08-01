@@ -13,7 +13,6 @@ const useConversationWithUserSearch = () => {
     } = useMessageContext();
     const [loading2, setLoading2] = useState(false);
     const [searchValue, setSearchValue] = useState("");
-    console.log(searchValue);
 
 
     const handleSearchConversationUser = async () => {
