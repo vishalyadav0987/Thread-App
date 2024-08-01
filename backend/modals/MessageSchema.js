@@ -13,6 +13,10 @@ const MessageSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    seen: {
+        type: Boolean,
+        default: false,
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model("message", MessageSchema);

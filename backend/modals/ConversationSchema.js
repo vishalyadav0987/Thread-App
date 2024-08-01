@@ -15,7 +15,11 @@ const ConversationSchema = new mongoose.Schema({
         senderId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user"
-        }
+        },
+        seen: {
+            type: Boolean,
+            default: false,
+        },
     }
 }, { timestamps: true });
 
