@@ -17,6 +17,10 @@ const MessageSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    img:{
+        type:String,
+        default:"",
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("message", MessageSchema);
