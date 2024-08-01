@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
+    isFreezAccount: {
+        type: Boolean,
+        default: false,
+    }
 }, { timestamps: true });
 
 
