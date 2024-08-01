@@ -15,6 +15,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
+    "backend": "file:..",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.3.7",
     "http-proxy-middleware": "^3.0.0",

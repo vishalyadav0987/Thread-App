@@ -7,10 +7,6 @@ import { BiSolidMessageRoundedAdd } from "react-icons/bi";
 import { IoSettingsOutline } from "react-icons/io5";
 
 
-const imageStyle = {
-    width: "36px",
-    cursor: "pointer"
-}
 
 
 
