@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
-import Actions from '../Actions/Action';
+import React from 'react'
 import { SlOptions } from "react-icons/sl";
 import { useNavigate } from 'react-router-dom';
 import { Avatar, useColorMode } from '@chakra-ui/react';
-import { formatDistanceToNow } from 'date-fns'
 
 
 const Comments = ({ reply, lastReply }) => {
