@@ -3,24 +3,22 @@ import './Post.css'
 import { SlOptions } from "react-icons/sl";
 import Actions from '../../Components/Actions/Action';
 import Comments from '../../Components/Comments/Comments';
-import Post from '../../Components/Post/Post';
 import axios from "axios";
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Avatar, Button, Spinner, useColorMode } from '@chakra-ui/react';
+import { Avatar, Button, Flex, Spinner, useColorMode } from '@chakra-ui/react';
 import { usePostContext } from '../../Context/PostContext';
 import { formatDistanceToNow } from 'date-fns';
+import useFetchUserData from '../../CustomHook/useFetchUserData';
 
 const PostPage = () => {
+    const { user, userDataloading } = useFetchUserData()
     const navigate = useNavigate();
     const { colorMode } = useColorMode()
     // const [post, setPost] = useState([]);
     const { posts, setPosts } = usePostContext();
-    const [user, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loading2, setLoading2] = useState(false);
     const { pid } = useParams();
-    const { username } = useParams();
 
     const currentPost = posts[0]
 
@@ -53,31 +51,17 @@ const PostPage = () => {
             }
         }
 
-        const fetchUserData = async () => {
-            setLoading2(true);
-            try {
-                const response = await axios.get(
-                    `http://localhost:3000/api/v1/user/profile/${username}`,
-                    { withCredentials: true }
-                );
-                if (!response.data.success) {
-                    toast.error(response.data.message, {
-                        className: 'custom-toast', // Custom class for styling)
-                    });
-                }
-                setUser(response.data.data);
-            } catch (error) {
-                console.log("Error in fetchUserData Function ->", error.message);
-            }
-            finally {
-                setLoading2(false);
-            }
-        }
-
-
         getPostDetails();
-        fetchUserData()
-    }, [pid, username, setPosts])
+    
+    }, [pid, setPosts]);
+
+    if (!user && userDataloading) {
+		return (
+			<Flex justifyContent={"center"}>
+				<Spinner size={"xl"} />
+			</Flex>
+		);
+	}
 
     if (!currentPost) return null;
 
@@ -105,7 +89,7 @@ const PostPage = () => {
                                                         mr={10}
                                                         onClick={(e) => {
                                                             e.preventDefault()
-                                                            navigate(`/${user.username}`)
+                                                            navigate(`/${user?.username}`)
                                                         }}
                                                         src={user.profilePic || `${colorMode === "dark" ? "./white.png" : "./black-pro.png"}`} alt="" size={"md"} />
                                                 </div>
@@ -114,12 +98,12 @@ const PostPage = () => {
                                         <div className='ok-1'
                                             onClick={(e) => {
                                                 e.preventDefault()
-                                                navigate(`/${user.username}`)
+                                                navigate(`/${user?.username}`)
                                             }}
                                             style={{
                                                 cursor: "pointer",
                                                 marginLeft: "20px"
-                                            }}>{user.username}</div>
+                                            }}>{user?.username}</div>
                                         <div className='tag'>
                                             <img src='/verified.png' alt="" />
                                         </div>

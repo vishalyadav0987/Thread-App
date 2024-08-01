@@ -6,37 +6,17 @@ import toast from 'react-hot-toast'
 import { Spinner } from '@chakra-ui/react'
 import Post from '../../Components/Post/Post'
 import { usePostContext } from '../../Context/PostContext'
+import useFetchUserData from '../../CustomHook/useFetchUserData'
 
 const UserPage = () => {
-  const [user, setUser] = useState(null);
+  const { user, userDataloading } = useFetchUserData()
   const { username } = useParams();
-  const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const { posts, setPosts } = usePostContext()
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/v1/user/profile/${username}`,
-          { withCredentials: true }
-        );
-        if (!response.data.success) {
-          toast.error(response.data.message, {
-            className: 'custom-toast', // Custom class for styling)
-          });
-        }
-        setUser(response.data.data);
-      } catch (error) {
-        console.log("Error in fetchUserData Function ->", error.message);
-      }
-      finally {
-        setLoading(false);
-      }
-    }
-
     const fetchUserAllPosts = async () => {
+      if (!user) return;
       setLoading2(true);
       try {
         const response = await axios.get(
@@ -60,11 +40,10 @@ const UserPage = () => {
         setLoading2(false);
       }
     }
-    fetchUserData();
     fetchUserAllPosts();
-  }, [username, setPosts]);
+  }, [username, setPosts, user]);
   // console.log(posts)
-  if (!user && !loading) {
+  if (!user && !userDataloading) {
     return (
       <div style={{
         textAlign: "center",
@@ -77,7 +56,7 @@ const UserPage = () => {
     )
   }
 
-  if (!user && loading) {
+  if (!user && userDataloading) {
     return (
       <div style={{
         display: "flex",
