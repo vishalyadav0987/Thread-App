@@ -2,7 +2,7 @@
     --r: 1em;  /* the radius */
     --t: 1.5em; /* the size of the tail */
     
-    max-width: 300px;
+    max-width: 350px;
     padding: 8px 10px;
     border-inline: var(--t) solid #0000;
     border-radius: calc(var(--r) + var(--t))/var(--r);
@@ -14,7 +14,7 @@
     color: #fff;
   }
   .left {
-    --_p: 1%;
+    --_p: 1.4%;
     border-bottom-left-radius: 0 0;
     place-self: start;
   }
