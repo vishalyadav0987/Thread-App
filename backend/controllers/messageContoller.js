@@ -1,12 +1,14 @@
 const MessageSchema = require('../modals/MessageSchema');
 const ConversationSchema = require('../modals/ConversationSchema');
-const { getRecieverSocketId,io } = require('../socket/socket')
+const { getRecieverSocketId, io } = require('../socket/socket');
+const cloudinary = require('cloudinary').v2;
 
 
 // SEND MESSAGE
 const sendMessage = async (req, res) => {
     try {
         const { recieverId, messageText } = req.body;
+        let { img } = req.body;
         const { _id: senderId } = req.user;
 
         // check conversation exist
@@ -27,11 +29,17 @@ const sendMessage = async (req, res) => {
             await conversation.save();
         }
 
+        if (img) {
+            const uploadImage = cloudinary.uploader.upload(img);
+            img = (await uploadImage).secure_url
+        }
+
         // if conversation exist so create the message
         const newMessage = new MessageSchema({
             conversationId: conversation._id,
             messageText,
             senderId,
+            img: img || "",
         });
 
         await Promise.all([
@@ -45,8 +53,8 @@ const sendMessage = async (req, res) => {
         ])
 
         const recieverIdSocketId = getRecieverSocketId(recieverId)
-        if(recieverIdSocketId){
-            io.to(recieverIdSocketId).emit("newMessage",newMessage);
+        if (recieverIdSocketId) {
+            io.to(recieverIdSocketId).emit("newMessage", newMessage);
             // one to one user conversation use io.to
             // newMessage is event
         }
