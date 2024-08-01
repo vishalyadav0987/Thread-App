@@ -66,7 +66,9 @@ const Conversations = ({ conversation, isOnline }) => {
                             alignItems: "center"
                         }}>
                             {authUser?._id === conversation?.lastMessage?.senderId
-                                ? <BsCheck2All /> : ""}
+                                ? <BsCheck2All style={{
+                                    color: `${conversation?.lastMessage?.seen ? "#179cf0" : ""}`
+                                }} /> : ""}
                             {conversation && conversation.lastMessage?.messageText?.length > 20
                                 ? conversation.lastMessage?.messageText.substring(0, 20) + "..."
                                 : conversation.lastMessage?.messageText
@@ -78,7 +80,9 @@ const Conversations = ({ conversation, isOnline }) => {
                     color: "#4d4d4d",
                     fontSize: "1rem"
                 }}>
-                    1d
+                    {
+                        ""
+                    }
                 </div>
 
             </div>
