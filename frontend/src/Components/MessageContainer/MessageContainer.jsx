@@ -18,7 +18,7 @@ const MessageContainer = () => {
     const [loading, setLoading] = useState(false);
     const { socket } = useSocketContext();
     useEffect(() => {
-        socket.on("newMessage", (newMesage) => {
+        socket?.on("newMessage", (newMesage) => {
 
             if (selectedConversation._id === newMesage.conversationId) {
                 setMessages((prevMessage) => [...prevMessage, newMesage]);
@@ -42,7 +42,40 @@ const MessageContainer = () => {
         });
 
         return () => socket.off("newMessage")
-    }, [socket,selectedConversation,setConversations])
+    }, [socket, selectedConversation, setConversations]);
+
+
+    useEffect(() => {
+        const lastMessageIsFromOtherUser = messages?.length &&
+            messages[messages?.length - 1].senderId !== authUser._id;
+        if (lastMessageIsFromOtherUser) {
+            socket.emit("markMessagesAsSeen", {
+                conversationId: selectedConversation._id,
+                userId: selectedConversation.userId // reciever Id
+            })
+            // markMessagesAsSeen [socket event]
+        }
+
+        socket.on("messagesSeen", ({ conversationId }) => {
+            if (selectedConversation._id === conversationId) {
+                setMessages((prev) => {
+                    const updatedMessageSeen = prev.map((message) => {
+                        if (!message.seen) {
+                            return {
+                                ...message,
+                                seen: true,
+                            }
+                        }
+                        return message;
+                    })
+                    return updatedMessageSeen;
+                })
+            }
+        })
+    }, [socket, selectedConversation, authUser?._id, messages])
+
+
+
     useEffect(() => {
         const getMessages = async () => {
             setLoading(true);
@@ -72,7 +105,7 @@ const MessageContainer = () => {
             }
         }
         getMessages();
-    }, [selectedConversation?.userId,selectedConversation?.mock])
+    }, [selectedConversation?.userId, selectedConversation?.mock])
 
     const lastMessageRef = useRef();
 
