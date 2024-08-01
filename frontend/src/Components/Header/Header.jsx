@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { useAuthContext } from '../../Context/AuthContext';
 import { BiSolidMessageRoundedAdd } from "react-icons/bi";
-
+import { IoSettingsOutline } from "react-icons/io5";
 
 
 const imageStyle = {
@@ -14,25 +14,30 @@ const imageStyle = {
 
 
 
-const Header = () => {
+const Header = ({ setAuthForm }) => {
     const { colorMode, toggleColorMode } = useColorMode();
     const { authUser } = useAuthContext();
+    
 
     const headerStyle = {
         display: "flex",
         alignItems: "center",
-        justifyContent: `${authUser ? "space-between" : "center"}`,
+        justifyContent: `${"space-between"}`,
         padding: "0.8rem"
     };
+
+   
     return (
         <>
             <div className="header" style={headerStyle}>
                 {
-                    authUser && (
+                    authUser ? (
                         <Link to={'/'}>
                             <FaHome size={"36px"} />
                         </Link>
-                    )
+                    ) : (<Link to={'/auth'}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => { setAuthForm("Login") }}>Login</Link>)
                 }
                 <img
                     style={imageStyle}
@@ -54,11 +59,20 @@ const Header = () => {
                     }
                     {
                         authUser && (
+                            <Link to={'/setting'}>
+                                <IoSettingsOutline size={"33px"} />
+                            </Link>
+                        )
+                    }
+                    {
+                        authUser ? (
                             <Link to={'/update'}>
                                 <Avatar size={"sm"}
                                     src={authUser?.profilePic} border={"1px solid #fff"} />
                             </Link>
-                        )
+                        ) : (<Link to={'/auth'}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => { setAuthForm("Sign-Up") }}>Sign in</Link>)
                     }
                 </div>
             </div>

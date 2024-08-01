@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import RegisterCard from '../../Components/RegisterCard/RegisterCard'
 import LoginCard from '../../Components/LoginCard/LoginCard'
 
-const Auth = () => {
-    const [authForm, setAuthForm] = useState("Login")
+const Auth = ({ authForm, setAuthForm }) => {
+
     return (
         <div>
             {
