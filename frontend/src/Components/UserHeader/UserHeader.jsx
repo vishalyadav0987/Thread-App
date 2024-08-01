@@ -15,12 +15,14 @@ import {
 import toast from 'react-hot-toast';
 import { useAuthContext } from '../../Context/AuthContext'
 import axios from 'axios'
+import useConverationMessage from '../../CustomHook/userConverationMessage';
 
 const UserHeader = ({ user }) => {
     const navigate = useNavigate()
     const { colorMode } = useColorMode();
     const { authUser } = useAuthContext() //logged in user
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const { navigateToMessage } = useConverationMessage();
     const linkCopyHandler = () => {
         // user id url
         const currentURL = window.location.href;
@@ -33,7 +35,6 @@ const UserHeader = ({ user }) => {
         })
     }
     const [isFollowing, setIsFollowing] = useState(user?.followers.includes(authUser?._id));
-    console.log(isFollowing, user._id);
     const handleFollowUnFollow = async () => {
         if (!authUser) {
             toast.error('Please Login to follow the user', {
@@ -106,7 +107,11 @@ const UserHeader = ({ user }) => {
                 <div className="middle-part user-bio">
                     {user && user.bio}
                 </div>
-                <div>
+                <div style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px"
+                }}>
                     {
                         authUser?._id === user._id && (
                             <Link to={'/update'}>
@@ -127,6 +132,19 @@ const UserHeader = ({ user }) => {
                                         : "Follow"
                                 }
                             </Button>
+                        )
+                    }
+                    {
+                        authUser?._id !== user._id && (
+
+                            <Button
+                                onClick={navigateToMessage}
+                                border={"1px solid #232323"}
+                                size={"sm"}
+                            >Message
+                            </Button>
+
+
                         )
                     }
                 </div>
@@ -155,7 +173,7 @@ const UserHeader = ({ user }) => {
                             <MenuList
                                 bg={"gray.dark"}
                                 border={"1px solid #323232"}
-                                >
+                            >
                                 <MenuItem
                                     onClick={linkCopyHandler}
                                     bg={"gray.dark"}
