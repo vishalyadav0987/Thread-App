@@ -14,10 +14,11 @@ export const SocketContextProvider = ({ children }) => {
     const [onlineUsers, setOnlineUser] = useState([])
     const { authUser } = useAuthContext();
     useEffect(() => {
-        const socket = io("http://localhost:3000", {
+        const socket = io("https://thread-app-mc1i.onrender.com", {
             query: {
                 userId: authUser?._id,
-            }
+            },
+            withCredentials: true
         });
         setSocket(socket);
 
