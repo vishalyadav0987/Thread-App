@@ -16,7 +16,7 @@ app.use(express.json({ limit: "50mb" }));// parse payload data
 app.use(express.urlencoded({ extended: true })); // to parse form data
 app.use(cookieParser())
 app.use(cors({
-    origin: 'https://localhost:3001.onrender.com', // Frontend URL
+    origin: 'https://your-frontend-url.onrender.com', // Frontend URL
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
