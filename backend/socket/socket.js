@@ -9,9 +9,9 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
     cors: {
-        origin: "https://your-frontend-url.onrender.com",
-        methods: ["GET", "POST"],
-        credentials:true
+        origin: process.env.FRONTEND_URL, // Frontend URL
+        credentials: true,
+        methods: ['GET', 'POST'],
     }
 });
 
@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
     // getOnlineUsers [it is event]
 
     // listen seen event markMessagesAsSeen from MessageContainer
-    socket.on("markMessagesAsSeen", async ({ conversationId, userId }) => {        
+    socket.on("markMessagesAsSeen", async ({ conversationId, userId }) => {
         try {
             await MessageSchema.updateMany({
                 conversationId: conversationId,
