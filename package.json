@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "nodemon backend/index.js",
         "start": "node backend/index.js",
-        "build":"npm install && npm install --prefix frontend && npm run build --prefix frontend"
+        "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
     },
     "keywords": [],
     "author": "",
@@ -29,5 +29,8 @@
         "socket.io": "^4.7.5",
         "stripe": "^16.1.0",
         "validator": "^13.12.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3"
     }
 }

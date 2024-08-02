@@ -41,6 +41,7 @@ const Header = ({ setAuthForm }) => {
                         onClick={() => { setAuthForm("Login") }}>Login</Link>)
                 }
                 <Image
+                cursor={"pointer"}
                  boxSize={{ base: '40px', sm: '40px', md: '40px', lg: '36px' }} // Responsive size
                     src={colorMode === "dark" ? "/light-logo.svg" : "/dark-logo.svg"}
                     alt="Logo"
