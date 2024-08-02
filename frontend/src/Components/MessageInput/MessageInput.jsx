@@ -37,7 +37,7 @@ const MessageInput = () => {
         setLoading(true);
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/v1/message',
+                'https://thread-app-mc1i.onrender.com/api/v1/message',
                 { messageText: inputVal, recieverId: selectedConversation.userId, img: imageUrl },
                 { headers: { "Content-Type": "application/json" }, withCredentials: true }
             )

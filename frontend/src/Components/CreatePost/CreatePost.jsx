@@ -41,7 +41,7 @@ const CreatePost = () => {
         setLoading(true)
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/v1/post/create`,
+                `https://thread-app-mc1i.onrender.com/api/v1/post/create`,
                 { postedBy: authUser._id, text: postText, img: imageUrl },
                 { headers: { "Content-Type": "application/json" }, withCredentials: true }
             );

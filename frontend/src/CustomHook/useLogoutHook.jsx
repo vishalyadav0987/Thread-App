@@ -8,7 +8,7 @@ const useLogoutHook = () => {
     const handleOnLogout = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:3000/api/v1/user/logout');
+            const response = await axios.get('https://thread-app-mc1i.onrender.com/api/v1/user/logout');
             if (response.data.success) {
                 toast.success(response.data.message, {
                     className: 'custom-toast', // Custom class for styling)

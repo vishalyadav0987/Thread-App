@@ -20,7 +20,7 @@ const UserPage = () => {
       setLoading2(true);
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/post/user/posts/${username}`,
+          `https://thread-app-mc1i.onrender.com/api/v1/post/user/posts/${username}`,
           { withCredentials: true }
         )
         if (response.data.success) {

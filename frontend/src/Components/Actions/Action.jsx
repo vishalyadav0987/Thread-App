@@ -45,7 +45,7 @@ const Actions = ({ post }) => {
         setLoading(true);
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/v1/post/reply/${post?._id}`,
+                `https://thread-app-mc1i.onrender.com/api/v1/post/reply/${post?._id}`,
                 { text: replyText },
                 { headers: { "Content-Type": "application/json" }, withCredentials: true },
             );
@@ -94,7 +94,7 @@ const Actions = ({ post }) => {
         setLoading2(true);
         try {
             const response = await axios.post(
-                `http://localhost:3000/api/v1/post/like/${post?._id}`,
+                `https://thread-app-mc1i.onrender.com/api/v1/post/like/${post?._id}`,
                 {},
                 { headers: { "Content-Type": "application/json" }, withCredentials: true },
             );

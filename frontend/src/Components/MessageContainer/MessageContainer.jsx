@@ -89,7 +89,7 @@ const MessageContainer = () => {
             try {
                 if (selectedConversation.mock) return;
                 const response = await axios.get(
-                    `http://localhost:3000/api/v1/message/${selectedConversation?.userId}`, // otherUserId id
+                    `https://thread-app-mc1i.onrender.com/api/v1/message/${selectedConversation?.userId}`, // otherUserId id
                     { withCredentials: true },
                 )
                 if (response.data.success) {

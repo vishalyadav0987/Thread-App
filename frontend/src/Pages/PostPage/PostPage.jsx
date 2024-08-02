@@ -27,7 +27,7 @@ const PostPage = () => {
             setLoading(true);
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/api/v1/post/${pid}`,
+                    `https://thread-app-mc1i.onrender.com/api/v1/post/${pid}`,
                     { withCredentials: true },
                 );
                 if (response.data.success) {

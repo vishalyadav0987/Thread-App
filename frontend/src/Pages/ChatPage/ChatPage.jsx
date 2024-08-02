@@ -51,7 +51,7 @@ const ChatPage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/v1/message/conversation',
+          'https://thread-app-mc1i.onrender.com/api/v1/message/conversation',
           { withCredentials: true },
         );
 

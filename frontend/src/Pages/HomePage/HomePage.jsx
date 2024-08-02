@@ -24,7 +24,7 @@ const HomePage = () => {
             setPosts([]);
             try {
                 const response = await axios.get(
-                    'http://localhost:3000/api/v1/post/feed',
+                    'https://thread-app-mc1i.onrender.com/api/v1/post/feed',
                     { withCredentials: true }
                 );
                 if (response.data.success) {

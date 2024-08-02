@@ -34,7 +34,7 @@ export default function LoginCard({ setAuthForm }) {
         setLoading(true);
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/v1/user/login',
+                'https://thread-app-mc1i.onrender.com/api/v1/user/login',
                 data,
                 { headers: { "Content-Type": "application/json" }, withCredentials: true },
             );

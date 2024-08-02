@@ -12,7 +12,7 @@ const FreezAccount = () => {
         setLoading(true)
         try {
             const response = await axios.put(
-                'http://localhost:3000/api/v1/user/freez',
+                'https://thread-app-mc1i.onrender.com/api/v1/user/freez',
                 {},
                 { headers: { "Content-Type": "application/json" }, withCredentials: true }
             );

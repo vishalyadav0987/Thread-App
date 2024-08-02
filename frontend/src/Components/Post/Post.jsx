@@ -23,7 +23,7 @@ const Post = ({ post }) => {
         const getProfileOfPostedUser = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/api/v1/user/profile/${postedBy}`,
+                    `https://thread-app-mc1i.onrender.com/api/v1/user/profile/${postedBy}`,
                     { withCredentials: true }
                 );
                 if (response.data.success) {
@@ -45,7 +45,7 @@ const Post = ({ post }) => {
         if (!window.confirm("Are you sure you want to delete this post.")) return;
         try {
             const response = await axios.delete(
-                `http://localhost:3000/api/v1/post/${postID}`,
+                `https://thread-app-mc1i.onrender.com/api/v1/post/${postID}`,
                 { withCredentials: true }
             );
             if (response.data.success) {
