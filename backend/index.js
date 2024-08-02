@@ -44,7 +44,7 @@ if(process.env.NODE_ENV="production"){
 
 
     app.get("*",(req,res)=>{
-        res.sendFile(path.resolve(frontendPath,"frontend","build","index.html"))
+        res.sendFile(path.resolve(frontendPath,"index.html"))
     })
 }
 

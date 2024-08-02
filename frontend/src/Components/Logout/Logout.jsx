@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@chakra-ui/react'
-import LogoutIcon from '@mui/icons-material/Logout';
+import { IoIosLogOut } from "react-icons/io";
 import useLogoutHook from '../../CustomHook/useLogoutHook';
 import { useLocation } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const Logout = () => {
                         <Button
                             isLoading={loading}
                             onClick={handleOnLogout} >
-                            <LogoutIcon />
+                            <IoIosLogOut />
                         </Button>
                     </div >
                 )
